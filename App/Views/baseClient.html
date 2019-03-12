@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/clientcss.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+            <!-- <li><a href="/">Home</a></li> -->
+                <img src="/Images/PiBake-logo.PNG"/>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout">Log out</a></li>                                            
+            </ul>
+        </div>
+    </nav>
+
+
+<div class="container">
+    <div class="row" >
+        <div class="col-lg-2" style="background-color: white; ">
+            <dd>{{ user.name }}</dd>
+        </div>
+
+        <div class="col-lg-5" style="background-color: white;">   
+            <div>
+                <select>
+                    <option value="Pi1">Pi1</option>
+                    <option value="Pi2">Pi2</option>
+                </select>                       
+            </div>    
+        <div>
+            <p>Pi</p>
+            <p>Location:</p>
+            <p>Status:</p>
+        </div>                                        
+    <table class=" table table-striped ">
+            <thead>
+                <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Temperature</th>
+                    <th scope="col">Date</th>
+                </tr>
+            </thead>
+        <tbody>
+            <tr>  
+                <td>12:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>1:00AM</td>
+                <td>64</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>2:00AM</td>
+                <td>66</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>3:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>4:00AM</td>
+                <td>67</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>5:00AM</td>
+                <td>68</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>6:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                               
+            <tr>  
+                <td>7:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>
+            <tr>  
+                <td>8:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>9:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>10:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>11:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>12:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>1:00PM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            <tr>  
+        </tbody>
+    </table>   
+</div> 
+            <div class="col-lg-5 align-self-end" style="background-color: white;">   
+                    <canvas id="chartjs-0" width="400" max-height="1200"></canvas>
+                    <script>
+                        new Chart(document.getElementById("chartjs-0"),
+                        {"type":"line","data":{"labels":["12AM","1AM","2AM","3AM","4AM","5AM","6AM","7AM","8AM","9AM","10AM","11AM","12AM","1PM","2PM","3PM","4PM","5PM","6PM","7PM","8PM","9PM","10PM","11PM","11:59PM"],
+                        "datasets":[{"label":"Temperatures","data":[65,64,65,66,65,67,68, 69, 70, 70, 71, 68, 67, 69, 70, 71],
+                        "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
+                        "options":{}});
+                    </script>                 
+                <!-- {% block body %}   
+                {% endblock %} -->
+            </div>                  
+    </div>
+</div>
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+
+    {% block footer %}
+    {% endblock %}
+    <footer class="footer">PiBake 2019 &#174;</footer>
+</body>
+</html>
