@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/clientcss.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <img src="/Images/PiBake-logo.PNG"/>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout">Log out</a></li>                                            
+            </ul>
+        </div>
+    </nav>
+
+
+<div class="container">
+    <div class="row" >
+        <div id = "PiInfoBox" class="col-lg-2" style="background-color: white; ">
+            <dd>{{ user.name }}</dd>
+        </div>
+
+        <div class="col-lg-5" style="background-color: white;">   
+            <div>
+                <select>
+                    <option value="Pi1">Pi1</option>
+                    <option value="Pi2">Pi2</option>
+                </select>                       
+            </div>
+
+            <div>
+                <p>Pi</p>
+                <p>Location:</p>
+                <p>Status:</p>
+            </div>    
+
+    <table id="table" class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Temperature</th>
+                    <th scope="col">Date</th>
+                </tr>
+            </thead>
+        <tbody>
+            <tr>  
+                <td>12:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>1:00AM</td>
+                <td>64</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>2:00AM</td>
+                <td>66</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>3:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>4:00AM</td>
+                <td>67</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>5:00AM</td>
+                <td>68</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>6:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                               
+            <tr>  
+                <td>7:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>
+            <tr>  
+                <td>8:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>9:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>10:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>11:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>12:00AM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
+                <td>1:00PM</td>
+                <td>65</td>
+                <td>3/11/2019</td>
+            <tr>  
+        </tbody>
+    </table>   
+</div> 
+            <div class="col-lg-5 align-self-end" style="background-color: white;">   
+                    <canvas id="chartjs-0" width="400" max-height="1200"></canvas>
+                    <script>
+  
+
+                        var t =   CSVtoArray('{{resultString}}')
+                        new Chart(document.getElementById("chartjs-0"),
+                        {"type":"line","data":{"labels":["12AM","1AM","2AM","3AM","4AM","5AM","6AM","7AM","8AM","9AM","10AM","11AM","12AM","1PM","2PM","3PM","4PM","5PM","6PM","7PM","8PM","9PM","10PM","11PM","11:59PM"],
+                        "datasets":[{"label":"Temperatures",
+                        "data": t,            
+                        "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
+                        "options":{}});
+                                
+                        function CSVtoArray(text) {
+                            var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
+                            var re_value = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
+                            // Return NULL if input string is not well formed CSV string.
+                            if (!re_valid.test(text)) return null;
+                            var a = [];                     // Initialize array to receive values.
+                            text.replace(re_value, // "Walk" the string using replace with callback.
+                            function(m0, m1, m2, m3) {
+                            // Remove backslash from \' in single quoted values.
+                            if      (m1 !== undefined) a.push(m1.replace(/\\'/g, "'"));
+                            // Remove backslash from \" in double quoted values.
+                            else if (m2 !== undefined) a.push(m2.replace(/\\"/g, '"'));
+                            else if (m3 !== undefined) a.push(m3);
+                            return ''; // Return empty string.
+                            });
+                            // Handle special case of empty last value.
+                            //if (/,\s*$/.test(text)) a.push('');
+                            return a;
+                            };
+                                    /*      =================================
+                                    **      ==== Simple Table Controller ====
+                                    **      =================================
+                                    **
+                                    **
+                                    **          With Pure JavaScript .. 
+                                    **   
+                                    **
+                                    **      No Libraries or Frameworks needed!
+                                    **
+                                    **
+                                    **              fb.com/bastony
+                                    **  
+                                    */
+
+
+                                    // get the table element
+                                    var $table = document.getElementById("table"),
+                                    // number of rows per page
+                                    $n = 5,
+                                    // number of rows of the table
+                                    $rowCount = $table.rows.length,
+                                    // get the first cell's tag name (in the first row)
+                                    $firstRow = $table.rows[0].firstElementChild.tagName,
+                                    // boolean var to check if table has a head row
+                                    $hasHead = ($firstRow === "TH"),
+                                    // an array to hold each row
+                                    $tr = [],
+                                    // loop counters, to start count from rows[1] (2nd row) if the first row has a head tag
+                                    $i,$ii,$j = ($hasHead)?1:0,
+                                    // holds the first row if it has a (<TH>) & nothing if (<TD>)
+                                    $th = ($hasHead?$table.rows[(0)].outerHTML:"");
+                                    // count the number of pages
+                                    var $pageCount = Math.ceil($rowCount / $n);
+                                    // if we had one page only, then we have nothing to do ..
+                                    if ($pageCount > 1) {
+                                    // assign each row outHTML (tag name & innerHTML) to the array
+                                    for ($i = $j,$ii = 0; $i < $rowCount; $i++, $ii++)
+                                    $tr[$ii] = $table.rows[$i].outerHTML;
+                                    // create a div block to hold the buttons
+                                    $table.insertAdjacentHTML("afterend","<div id='buttons'></div");
+                                    // the first sort, default page is the first one
+                                    sort(1);
+                                    }
+
+                                    // ($p) is the selected page number. it will be generated when a user clicks a button
+                                    function sort($p) {
+                                    /* create ($rows) a variable to hold the group of rows
+                                    ** to be displayed on the selected page,
+                                    ** ($s) the start point .. the first row in each page, Do The Math
+                                    */
+                                    var $rows = $th,$s = (($n * $p)-$n);
+                                    for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
+                                    $rows += $tr[$i];
+
+                                    // now the table has a processed group of rows ..
+                                    $table.innerHTML = $rows;
+                                    // create the pagination buttons
+                                    document.getElementById("buttons").innerHTML = pageButtons($pageCount-1,$p);
+                                    // CSS Stuff
+                                    document.getElementById("id"+$p).setAttribute("class","active");
+                                    }
+
+
+                                    // ($pCount) : number of pages,($cur) : current page, the selected one ..
+                                    function pageButtons($pCount,$cur) {
+                                    /* this variables will disable the "Prev" button on 1st page
+                                    and "next" button on the last one */
+                                    var $prevDis = ($cur == 1)?"disabled":"",
+                                    $nextDis = ($cur == $pCount)?"disabled":"",
+                                    /* this ($buttons) will hold every single button needed
+                                    ** it will creates each button and sets the onclick attribute
+                                    ** to the "sort" function with a special ($p) number..
+                                    */
+                                    $buttons = "<input type='button' value='&lt;&lt; Prev' onclick='sort("+($cur - 1)+")' "+$prevDis+">";
+                                    for ($i=1; $i<=$pCount;$i++)
+                                    $buttons += "<input type='button' id='id"+$i+"'value='"+$i+"' onclick='sort("+$i+")'>";
+                                    $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sort("+($cur + 1)+")' "+$nextDis+">";
+                                    return $buttons;
+                                    }                                    
+                    </script>                 
+            </div>                  
+    </div>
+</div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+
+    <footer class="footer">PiBake 2019 &#174;</footer>
+</body>
+</html>
