@@ -6,9 +6,6 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 
-use App\Models\Temperature;
-
-
 /**
  * Items controller (example)
  *
@@ -37,23 +34,6 @@ class Client extends Authenticated
      */
     public function indexAction()
     {
-
-        // call model to get temps
-        $temps = Temperature::getTemps();
-
-        //instantiate empty string
-        $formattedResults = "";
-
-        //format a CSV string 
-        for ($x = 0; $x < sizeof($temps); $x++)
-        {
-          $formattedResults .=  $temps[$x]['Temp'] . ',';
-        }
-        
-        View::renderTemplate('Client/ClientDashboard.html', ['user' => $this->user, 'temps' => $temps, 'resultString'=> $formattedResults]);
-    }
-
-
         View::renderTemplate('Client/ClientDashboard.html', [
             'user' => $this->user
         ]);
@@ -78,5 +58,4 @@ class Client extends Authenticated
     {
         echo "show action";
     }
-
 }
