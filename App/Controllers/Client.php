@@ -6,6 +6,7 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 use App\Models\Temperature;
+use App\Models\Pi;
 
 /**
  * Items controller (example)
@@ -37,6 +38,10 @@ class Client extends Authenticated
     {
         // call model to get temps
         $temps = Temperature::getTemps();
+        
+        // call model to get Pis
+        $pis = Pi::getPi();
+
 
         //instantiate empty string
         $formattedResults = "";
@@ -46,8 +51,8 @@ class Client extends Authenticated
         {
           $formattedResults .=  $temps[$x]['Temp'] . ',';
         }
-        
-        View::renderTemplate('Client/ClientDashboard.html', ['user' => $this->user, 'temps' => $temps, 'resultString'=> $formattedResults]);
+
+        View::renderTemplate('Client/ClientDashboard.html', ['user' => $this->user, 'temps' => $temps, 'resultString'=> $formattedResults, 'Pis' => $pis]);
     }
 
 }

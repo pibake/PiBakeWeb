@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/clientcss.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
 </head>
 <body>
@@ -15,7 +16,7 @@
                 <img src="/Images/PiBake-logo.PNG"/>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/logout">Log out</a></li>                                            
+                <li><a href="/logout" style="color: red; font-size: 1.2em;">Log out <i class="fas fa-sign-out-alt"></i></a></li>                                            
             </ul>
         </div>
     </nav>
@@ -24,21 +25,25 @@
 <div class="container">
     <div class="row" >
         <div id = "PiInfoBox" class="col-lg-2" style="background-color: white; ">
+            <i class="fas fa-user-circle"></i>
+            <p>Wecome</p>
             <dd>{{ user.name }}</dd>
         </div>
 
         <div class="col-lg-5" style="background-color: white;">   
             <div>
                 <select>
-                    <option value="Pi1">Pi1</option>
-                    <option value="Pi2">Pi2</option>
+                    <option value='' disabled selected>Please select a Pi</option>
+                    {% for pi in Pis %}
+                    <option value='{{ pi.PiId }}'>Pi {{ pi.PiId }}</option>
+                    {% endfor %}
                 </select>                       
             </div>
 
             <div>
-                <p>Pi</p>
-                <p>Location:</p>
-                <p>Status:</p>
+                    <p>Pi</p>
+                    <p>Location:</p>
+                    <p>Status:</p>
             </div>    
 
     <table id="table" class="table table-striped">
@@ -52,7 +57,7 @@
         <tbody>
             <tr>  
                 <td>12:00AM</td>
-                <td>65</td>
+                <td>64</td>
                 <td>3/11/2019</td>
             </tr>                                
             <tr>  
@@ -62,17 +67,17 @@
             </tr>                                
             <tr>  
                 <td>2:00AM</td>
-                <td>66</td>
-                <td>3/11/2019</td>
-            </tr>                                
-            <tr>  
-                <td>3:00AM</td>
                 <td>65</td>
                 <td>3/11/2019</td>
             </tr>                                
             <tr>  
+                <td>3:00AM</td>
+                <td>66</td>
+                <td>3/11/2019</td>
+            </tr>                                
+            <tr>  
                 <td>4:00AM</td>
-                <td>67</td>
+                <td>66</td>
                 <td>3/11/2019</td>
             </tr>                                
             <tr>  
@@ -82,49 +87,107 @@
             </tr>                                
             <tr>  
                 <td>6:00AM</td>
-                <td>65</td>
+                <td>68</td>
                 <td>3/11/2019</td>
             </tr>                               
             <tr>  
                 <td>7:00AM</td>
-                <td>65</td>
+                <td>69</td>
                 <td>3/11/2019</td>
             </tr>
             <tr>  
                 <td>8:00AM</td>
-                <td>65</td>
+                <td>69</td>
                 <td>3/11/2019</td>
             </tr>                                
             <tr>  
                 <td>9:00AM</td>
-                <td>65</td>
+                <td>70</td>
                 <td>3/11/2019</td>
             </tr>                                
             <tr>  
                 <td>10:00AM</td>
-                <td>65</td>
+                <td>70</td>
                 <td>3/11/2019</td>
             </tr>                                
             <tr>  
                 <td>11:00AM</td>
-                <td>65</td>
+                <td>71</td>
                 <td>3/11/2019</td>
             </tr>                                
             <tr>  
                 <td>12:00AM</td>
-                <td>65</td>
+                <td>72</td>
                 <td>3/11/2019</td>
             </tr>                                
             <tr>  
                 <td>1:00PM</td>
-                <td>65</td>
+                <td>70</td>
                 <td>3/11/2019</td>
             <tr>  
+            <tr>  
+                    <td>2:00PM</td>
+                    <td>69</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+                <tr>  
+                    <td>3:00PM</td>
+                    <td>70</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+                <tr>  
+                    <td>4:00PM</td>
+                    <td>66</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+                <tr>  
+                    <td>5:00PM</td>
+                    <td>65</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+                <tr>  
+                    <td>6:00PM</td>
+                    <td>67</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+                <tr>  
+                    <td>7:00PM</td>
+                    <td>68</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+                <tr>  
+                    <td>8:00PM</td>
+                    <td>65</td>
+                    <td>3/11/2019</td>
+                </tr>                               
+                <tr>  
+                    <td>9:00PM</td>
+                    <td>65</td>
+                    <td>3/11/2019</td>
+                </tr>
+                <tr>  
+                    <td>10:00PM</td>
+                    <td>65</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+                <tr>  
+                    <td>11:00PM</td>
+                    <td>65</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+                <tr>  
+                    <td>11:59PM</td>
+                    <td>65</td>
+                    <td>3/11/2019</td>
+                </tr>                                
+               
         </tbody>
     </table>   
 </div> 
-            <div class="col-lg-5 align-self-end" style="background-color: white;">   
-                    <canvas id="chartjs-0" width="400" max-height="1200"></canvas>
+            <div class="col-lg-5" style="background-color: white;">   
+                    <canvas id="chartjs-0" width="400" max-height="1200"></canvas>                    
+
+
                     <script>
   
 
@@ -135,6 +198,8 @@
                         "data": t,            
                         "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
                         "options":{}});
+
+
                                 
                         function CSVtoArray(text) {
                             var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
@@ -174,7 +239,7 @@
                                     // get the table element
                                     var $table = document.getElementById("table"),
                                     // number of rows per page
-                                    $n = 5,
+                                    $n = 10,
                                     // number of rows of the table
                                     $rowCount = $table.rows.length,
                                     // get the first cell's tag name (in the first row)
