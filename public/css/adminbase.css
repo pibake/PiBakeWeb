@@ -1,0 +1,128 @@
+body {
+
+    background-color: transparent;
+}
+html{
+    background-repeat: no-repeat;
+    background-size: auto;
+    height: 100%;
+    background: #082a75; /* Old browsers */
+    background: -moz-linear-gradient(-45deg, #082a75 0%, #38bed8 99%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, #082a75 0%,#38bed8 99%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, #082a75 0%,#38bed8 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#082a75', endColorstr='#38bed8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+.container{
+    width: auto;
+    height: 100%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.container-fluid{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+img{
+    height: 50px;
+}
+.navbar-nav{
+    margin-right: 0px;
+}
+.nav>li{
+    padding: 0px 5px 0px 5px;
+}
+form{
+    background-color: white;
+    padding: 10px 10px 10px 10px;
+    border-radius: 5px;
+    width: 27%;
+    min-width: 270px;
+    margin: 0 auto;
+}
+div>img{
+    display:block;
+    margin:auto;
+    height: 150px;
+
+}
+h1{
+    text-align: center;
+}
+.input{
+        border-left: none;
+    border-right: none;
+    border-bottom: 1px solid black;
+    border-top: none;
+    box-shadow: transparent; 
+}
+#loginBtn{
+    display:block;
+    margin:auto;
+    width: 60%;
+    background-color: #082a75;
+    color: white;
+
+}  
+a{
+    color: black;
+    text-align: center;
+}
+a.nav-link{
+    color: black;
+}
+#forgotPass{
+    text-align: center;
+    padding-top: 10px;
+}
+div.form-group{
+    width: 60%;
+    margin: 20px auto;
+}
+div.form-group>input{
+    text-align: center;
+}
+.footer{
+    position: fixed;
+    left: 0;
+    bottom: 10px;
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+#PiInfoBox{
+    text-align: center;
+    font-size: 2em;
+  }
+i.fas.fa-user-circle {
+    font-size: 100px;
+}
+div.row > div{
+    padding: 10px 10px 10px 10px;
+}
+div.col-lg-10 > div {
+    border: 1px solid grey;
+    padding: 10px 10px 10px 10px;
+    margin-top: 10px;
+}
+
+div.col-lg-2{
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 2em;
+    border-right: 1px solid black;
+}
+div.col-lg-12{
+    background-color: rgb(255, 255, 255);
+    border-top: 1px solid black;
+    height: 30px;
+}
+@media only screen and (min-width: 1200px) {
+    div.row> div{     
+        min-height: fit-content;
+        height: 790px;
+    }
+  }
+
+  p{
+      margin-bottom: 0px;
+  }
