@@ -81,7 +81,7 @@ div.form-group{
 div.form-group>input{
     text-align: center;
 }
-.footer {
+.footer{
     position: fixed;
     left: 0;
     bottom: 10px;
@@ -90,6 +90,5 @@ div.form-group>input{
     text-align: center;
 }
 #PiInfoBox{
-    border-style: solid;
-    border-width: 1px;
+    text-align: center;
   }
