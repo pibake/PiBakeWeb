@@ -32,6 +32,8 @@ class Items extends Authenticated
      */
     public function indexAction()
     {
+
+        print_r($_POST);
         View::renderTemplate('Items/index.html');
     }
 

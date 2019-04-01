@@ -17,15 +17,26 @@
             </tr>
         </thead>
     <tbody>
-            
-{% for org in orgs %}
-        <tr>  
-            <td>{{ org.OrgName }}</td>
-            <td>{{ org.City }}</td>
-            <td>{{ org.Email }}</td>
-            <td><button value="{{org.OrgId}}">select</button></td>
-        </tr>      
-{% endfor %}
+          <form id="selectForm" name="selectForm" method="Post" action="/Items/index">
+              <input type="hidden" name="selectedOrg" id="selectedOrg" value="">
+                {% for org in orgs %}
+                        <tr>  
+                            <td>{{ org.OrgName }}</td>
+                            <td>{{ org.City }}</td>
+                            <td>{{ org.Email }}</td>
+                            <td><button type="button" value="{{org.OrgId}}">select</button></td>
+                        </tr>      
+                {% endfor %}
+          </form>  
 </tbody>
 </table>
+<script>
+        $("button").click(function() {          
+           var fired_button = $(this).val();
+           alert(fired_button);
+           document.selectForm.selectedOrg.value = fired_button;          
+        document.forms["selectForm"].submit();
+       });  
+       </script> 
+
 {% endblock %}
