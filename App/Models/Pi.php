@@ -37,9 +37,9 @@ class Pi extends \Core\Model
     }
 
 
-    public static function getPi()
+    public static function getPi($OrgId)
     {
-        $sql = 'SELECT * FROM pi';
+        $sql = "SELECT * FROM `orgroom` WHERE OrgId = '$OrgId'";
 
         $db = static::getDB();
         $stmt = $db->query($sql);
