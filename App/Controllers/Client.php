@@ -44,29 +44,33 @@ class Client extends Authenticated
         $pis = Pi::getPi($user->OrgId);
 
         $temps = array();
+        
         // loop through array to get individual pis
         foreach($pis as $key => $value){
 
+            
             // loop through each pi 
             foreach($value as $key => $value){
-
                 //if the property equals PiId...
-                if($key == 'PiId'){
-
+                if($key == 'PiId'){                   
                     // call model to get temps by sending it the PiId                   
-                    array_push($temps, Temperature::getTemps($value));     
-                              
+                    array_push($temps, Temperature::getTemps($value));
+
                 }
+
             }
         
         }
         
+
+
         //instantiate empty string
         
         $formattedResultsArray = array();
-
+        $timeLabels = array();
         foreach($temps as $key => $value){
             $formattedResults = "";
+            $formattedTimeLabels = "";
             foreach($value as $key => $value){
 
                 foreach($value as $key => $value){
@@ -75,10 +79,16 @@ class Client extends Authenticated
                                            
                     $formattedResults .= $value . ',';                                  
                     }
+
+                    if($key == 'TempTime'){
+                                           
+                        $formattedTimeLabels .= $value . ',';                                  
+                        }
                 }
 
             }
-                 array_push($formattedResultsArray, $formattedResults);       
+                 array_push($formattedResultsArray, $formattedResults);     
+                 array_push($timeLabels, $formattedTimeLabels);    
         }
 
         //format a CSV string 
@@ -86,8 +96,7 @@ class Client extends Authenticated
         // {
         //   $formattedResults .=  $temps[$x]['Temp'] . ',';
         // }
-        var_dump($temps);
-        View::renderTemplate('Client/ClientDashboard.html', ['user' => $this->user, 'temps' => $temps, 'resultString'=> $formattedResults, 'Pis' => $pis, 'RESULTARRAY' => $formattedResultsArray]);
+        View::renderTemplate('Client/ClientDashboard.html', ['user' => $this->user, 'temps' => $temps, 'resultString'=> $formattedResults, 'Pis' => $pis, 'RESULTARRAY' => $formattedResultsArray, 'timeLabels'=>$timeLabels, 'index'=>0]);
     }
 
 }

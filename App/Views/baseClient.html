@@ -27,23 +27,23 @@
         <div id = "PiInfoBox" class="col-lg-2" style="background-color: white; ">
             <i class="fas fa-user-circle"></i>
             <p>Wecome</p>
-            <dd>{{ user.name }}</dd>
+            <dd>{{ user.FirstName }}</dd>
         </div>
 
         <div class="col-lg-5" style="background-color: white;">   
             <div>
-                <select>
-                    <option value='' disabled selected>Please select a Pi</option>
+                <select id="PiSelect" onchange="piDropDownClick()">
+                    <!-- <option value=''disabled selected>Please select a Pi</option> -->
                     {% for pi in Pis %}
-                    <option value='{{ pi.PiId }}'>Pi {{ pi.PiId }}</option>
+                    <option value='{{ loop.index0 }}'>Pi {{ pi.PiId }}</option>
                     {% endfor %}
                 </select>                       
             </div>
 
             <div>
-                    <p>Pi</p>
-                    <p>Location:</p>
-                    <p>Status:</p>
+                    <p id="PiId" >Pi ID: {{ Pis[0].PiId }}</p>
+                    <p id="PiLocation">Location: {{ Pis[0].Bldg }}, {{ Pis[0].RoomID }} </p>
+                    <p id="PiStatus" style="color: green">Status: Online</p>
             </div>    
 
     <table id="table" class="table table-striped">
@@ -54,34 +54,78 @@
                     <th scope="col">Date</th>
                 </tr>
             </thead>
-        <tbody>
-            <tr>  
-                <td>12:00AM</td>
-                <td>64</td>
-                <td>3/11/2019</td>
-            </tr>                                                                           
-        </tbody>
+            <!-- loop through the nested array of individual temperature records -->           
+            {% for type, records in temps %} 
+                {% if loop.index0  == 0 %}          
+                <tbody id="dataTable{{loop.index0}}">    
+    
+                <!-- grab the first set of arrays -->                    
+                <!-- for the indivdual nested arrays, define the key and print the value-->
+                {% for key, value in records %}
+                <tr>   
+
+                <td>
+                {{ value.TempTime }}
+                </td>
+
+                <td>
+                {{ value.Temp }}
+                </td>
+
+                <td>
+                {{ value.TempDate }}
+                </td> 
+
+                </tr>     
+
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tbody id="dataTable{{loop.index0}}" hidden>   
+   
+                    <!-- grab the first set of arrays -->                    
+                    <!-- for the indivdual nested arrays, define the key and print the value-->
+                    {% for key, value in records %}
+                    <tr>   
+    
+                    <td>
+                    {{ value.TempTime }}
+                    </td>
+    
+                    <td>
+                    {{ value.Temp }}
+                    </td>
+    
+                    <td>
+                    {{ value.TempDate }}
+                    </td> 
+    
+                    </tr>     
+    
+                    {% endfor %}
+                    </tbody>
+                {% endif %} 
+                 
+                                                                
+                
+            {% endfor %}           
     </table>   
 </div> 
             <div class="col-lg-5" style="background-color: white;">   
                     <canvas id="chartjs-0" width="400" max-height="1200"></canvas>                    
 
-
                     <script>
-  
-
-                        //var t =   CSVtoArray('{{resultString}}')
-
                         var t =   CSVtoArray('{{RESULTARRAY[0]}}')
+                        var timeLabels =   CSVtoArray('{{timeLabels[0]}}')
                         new Chart(document.getElementById("chartjs-0"),
-                        {"type":"line","data":{"labels":["12AM","1AM","2AM","3AM","4AM","5AM","6AM","7AM","8AM","9AM","10AM","11AM","12AM","1PM","2PM","3PM","4PM","5PM","6PM","7PM","8PM","9PM","10PM","11PM","11:59PM"],
+                        {"type":"line","data":{"labels":timeLabels,
                         "datasets":[{"label":"Temperatures",
                         "data": t,            
                         "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
                         "options":{}});
 
 
-                               
+                             
                         function CSVtoArray(text) {
                             var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
                             var re_value = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
@@ -101,6 +145,16 @@
                             //if (/,\s*$/.test(text)) a.push('');
                             return a;
                             };
+
+
+
+
+
+
+
+
+
+
                                     /*      =================================
                                     **      ==== Simple Table Controller ====
                                     **      =================================
@@ -116,9 +170,9 @@
                                     **  
                                     */
 
-
+                                    var x = document.getElementById("PiSelect").value;
                                     // get the table element
-                                    var $table = document.getElementById("table"),
+                                    var $table = document.getElementById("dataTable"+x),
                                     // number of rows per page
                                     $n = 10,
                                     // number of rows of the table
@@ -159,7 +213,7 @@
                                     // now the table has a processed group of rows ..
                                     $table.innerHTML = $rows;
                                     // create the pagination buttons
-                                    document.getElementById("buttons").innerHTML = pageButtons($pageCount-1,$p);
+                                    document.getElementById("buttons").innerHTML = pageButtons($pageCount,$p);
                                     // CSS Stuff
                                     document.getElementById("id"+$p).setAttribute("class","active");
                                     }
@@ -181,7 +235,92 @@
                                     $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sort("+($cur + 1)+")' "+$nextDis+">";
                                     return $buttons;
                                     }                                    
-                    </script>                 
+                    </script> 
+                    <script>
+                        function piDropDownClick() {
+                            var x = document.getElementById("PiSelect").value;
+                            // alert("{{ user.FirstName }} selected " + x);
+                            var result = '{{RESULTARRAY|length}}';
+
+                            var i;
+
+
+                            for (i = 0; i < result; i++) { 
+                                if(i == x){
+                                    var tableToShow = "dataTable" + i;
+                                    document.getElementById(tableToShow).style.display = "Contents";
+                                }else{
+                                    var tableToShow = "dataTable" + i;
+                                    document.getElementById(tableToShow).style.display = "None";
+                                }
+                            }
+
+
+
+
+
+
+
+
+
+                            var selectedIndex = "";
+                            var selectedPiId = "";
+                            var selectedPiLocation = "";
+                            var selectedPiStatus = "";                        
+                            var timeLabels = new Array();
+
+                            switch (x){
+                            case "0":
+                                selectedIndex = "{{RESULTARRAY[0]}}";
+                                selectedPiId = "Pi ID: {{ Pis[0].PiId }}";
+                                selectedPiLocation = "Location: {{ Pis[0].Bldg }}, {{ Pis[0].RoomID }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[0]}}')
+                                break;
+                            case "1":
+                                
+                                selectedIndex = "{{RESULTARRAY[1]}}";
+                                selectedPiId = "Pi ID: {{ Pis[1].PiId }}";
+                                selectedPiLocation = "Location: {{ Pis[1].Bldg }}, {{ Pis[1].RoomID }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[1]}}')
+                                break;
+                            case "2":
+                                selectedIndex = "{{RESULTARRAY[2]}}";
+                                selectedPiId = "Pi ID: {{ Pis[2].PiId }}";
+                                selectedPiLocation = "Location: {{ Pis[2].Bldg }}, {{ Pis[2].RoomID }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[2]}}')
+                                break;
+                            case "3":
+                                selectedIndex = "{{RESULTARRAY[3]}}";
+                                selectedPiId = "Pi ID: {{ Pis[3].PiId }}";
+                                selectedPiLocation = "Location: {{ Pis[3].Bldg }}, {{ Pis[3].RoomID }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[3]}}')
+                                break;
+                            case "4":
+                                selectedIndex = "{{RESULTARRAY[4]}}";
+                                selectedPiId = "Pi ID: {{ Pis[4].PiId }}";
+                                selectedPiLocation = "{{ Pis[4].Bldg }}, {{ Pis[4].RoomID }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[4]}}')
+                                break;
+                            }
+
+                            var data =   CSVtoArray(selectedIndex)
+                            document.getElementById("PiId").innerHTML = selectedPiId;
+                            document.getElementById("PiLocation").innerHTML = selectedPiLocation;
+                            document.getElementById("PiStatus").innerHTML = selectedPiStatus;
+
+                            new Chart(document.getElementById("chartjs-0"),
+                            {"type":"line","data":{"labels": timeLabels,
+                            "datasets":[{"label":"Temperatures",
+                            "data": data,            
+                            "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
+                            "options":{}});
+                            }                           
+                    </script>                
             </div>                  
     </div>
 </div>

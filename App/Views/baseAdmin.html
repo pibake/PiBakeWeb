@@ -14,11 +14,10 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
-                <img src="/Images/PiBake-logo.PNG"/>
-                        
+                <img src="/Images/PiBake-logo.PNG" onclick="location.href='/admin/index';"/>                    
             </ul>  
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/logout" style="color: red; font-size: 1.2em;">Log out <i class="fas fa-sign-out-alt"></i></a></li>                                            
+                <li><a href="/logout" style="color: red; font-size: 1.2em;">Log out</a></li>                                            
             </ul>
         </div>
     </nav>
@@ -26,22 +25,34 @@
 
 <div class="container">
     <div class="row" >
-
         <div class="col-lg-2" >
             <i class="fas fa-user-circle"></i>
             <p>Wecome</p>
             <p>{{ user.FirstName }}</p>
+            <br>  
+            <p>{{selectedOrg[0].OrgName}}</p> 
+            <br>
+                <div style="border-top: 1px solid black;" >
+                    <a href="/Admin/currentUsers" style="font-size: 1 em;">Users</a>     
+                </div>    
+                <div style="border-top: 1px solid black;" >
+                    <a href="/Admin/currentPis" style="font-size: 1 em;">Pi's</a>     
+                </div>    
+                <div style="border-top: 1px solid black;" >
+                    <a href="/Admin/currentOrganizationInfo" style="font-size: 1 em;">Organization Info</a>     
+                </div>                                         
         </div>
 
         <div class="col-lg-10" style="background-color: white;">   
-            <div>
+     
                 {% block body %}
                 {% endblock %}               
-            </div>
+
         </div>
 
         <div class="col-lg-12" style="height: 40px;"> 
-                                  
+            {% block bottom %}
+            {% endblock %}                   
         </div>    
 
     </div>

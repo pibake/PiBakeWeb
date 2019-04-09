@@ -40,11 +40,28 @@ class Organization extends \Core\Model
     public static function getOrganizations()
     {
         $sql  = 'SELECT * FROM `organization`';
+        $db = static::getDB();
+        $stmt = $db->query($sql);
+        
+       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        return $results;
+    }
 
+    public static function getOrganizationInfo($orgId)
+    {
+        $sql  = "SELECT * FROM `organization` WHERE orgId = '$orgId'";
+        $db = static::getDB();
+        $stmt = $db->query($sql);
+        
+       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        return $results;
+    }
 
-
+    public static function getOrganizationUsers($orgId)
+    {
+        $sql  = "SELECT * FROM `users` WHERE OrgId = '$orgId'";
         $db = static::getDB();
         $stmt = $db->query($sql);
         

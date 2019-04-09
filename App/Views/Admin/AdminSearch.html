@@ -17,7 +17,7 @@
             </tr>
         </thead>
     <tbody>
-          <form id="selectForm" name="selectForm" method="Post" action="/Items/index">
+          <form id="selectForm" name="selectForm" method="Post" action="/Admin/currentUsers">
               <input type="hidden" name="selectedOrg" id="selectedOrg" value="">
                 {% for org in orgs %}
                         <tr>  
@@ -32,9 +32,9 @@
 </table>
 <script>
         $("button").click(function() {          
-           var fired_button = $(this).val();
-           alert(fired_button);
-           document.selectForm.selectedOrg.value = fired_button;          
+            var fired_button = $(this).val();
+        //    alert(fired_button);
+            document.selectForm.selectedOrg.value = fired_button;          
         document.forms["selectForm"].submit();
        });  
        </script> 

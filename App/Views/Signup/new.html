@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'baseAdmin.html' %}
 
 {% block title %}Sign up{% endblock %}
 
@@ -79,3 +79,8 @@
     </form>
 
 {% endblock %}
+{% block bottom %}
+<ul class="nav navbar-nav navbar-right">
+        <li><a href="/Admin/currentUsers" ><i class="fas fa-arrow-left"></i> Back </a></li>                                
+    </ul>
+{% endblock %}    
