@@ -1,0 +1,15 @@
+language: php
+php:
+- '7.0'
+
+env:
+  global:
+  - secure: KH2lNpiRnusNPsLoisK6tvqGPyfo+k7UNQlAFCa9rs+pmcHoh3Mubxa0+HfyeY7Z26RKIHWHAbw3Nb9O1eJATEubdKv6z/cqXx8bZAOvvfrMF3jWUkkGhuy6Z9PqOTbJkU5raBIoYwdShIb2G5Pv+3tFOx9VFETNg5BvZ4UY5YDBwkRhVt+5XNOdymaKyZv4ozPulDkjiJ7p1qEqzZuH6evUwsZTXvQOBt3kBA4TJaOOqJS06GC3X8ECuFX1aI1KlCRgYV1co6yVOIcWaUjWZkGgZPJDb5Efr/cE+zGiV0k6bDdmXxTEBiDyrcpLwD3lVfcpcwlrDk2NeQx6YU9tNC2Bs39cVMNWSBFrh8Pf29rLItIVwcAUoTEVAlvxJ67xTKtB8U1cyp4jOQ7HxgE0HdGVcMJr2gEtAZkMMzKqCvay0vx4LxPDkHj8iTWCzMTJTKaLDvqDDnYnn513MKnG/WPM3MmFn5tLQaLsr0jr4HydLOLVP3JlhKIE7l+/EgH8GrsHiHaCmaT8uqBDXYO0KSCQwWL2YMDMHMVJFmSdCXa4FuEMYJ5XntuUD0yS3In2O9NkSpH+WcV4xFy6dXaDlG4d/IPQ1pae1bWeIhfW6F8L+jwb6LYKYAod64LsPhAadmwRngYF3if7r5VZCucOVp9ZovWH2LLsvV8NAro/WPs=
+
+script: sudo apt update
+
+deploy:
+  provider: script
+  script: bash deploy.sh
+  on:
+    branch: build
