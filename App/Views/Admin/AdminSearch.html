@@ -21,10 +21,10 @@
               <input type="hidden" name="selectedOrg" id="selectedOrg" value="">
                 {% for org in orgs %}
                         <tr>  
-                            <td>{{ org.OrgName }}</td>
-                            <td>{{ org.City }}</td>
-                            <td>{{ org.Email }}</td>
-                            <td><button type="button" value="{{org.OrgId}}">select</button></td>
+                            <td>{{ org.orgName }}</td>
+                            <td>{{ org.city }}</td>
+                            <td>{{ org.email }}</td>
+                            <td><button type="button" value="{{org.orgId}}">select</button></td>
                         </tr>      
                 {% endfor %}
           </form>  

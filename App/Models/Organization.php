@@ -69,6 +69,26 @@ class Organization extends \Core\Model
 
         return $results;
     }
+    public static function UpdateUser()
+    {
+        
+        $sql = "UPDATE `users` SET `lastName`= '$_POST[lastname]',`firstName`= '$_POST[firstname]' ,`email`= '$_POST[email]' ,`role`='$_POST[role]' WHERE `userId` = '$_POST[userId]'";
+        
+      
+        $db = static::getDB();
+        $stmt = $db->query($sql);  
+                     
+    }
+
+    public static function DeleteUser()
+    {
+        
+        
+        $sql = "DELETE FROM `users` WHERE userId = '$_POST[userdeleteid]'";
+        $db = static::getDB();
+        $stmt = $db->query($sql);  
+                     
+    }
 
     
 }

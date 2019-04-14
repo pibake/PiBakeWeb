@@ -41,7 +41,8 @@ class Client extends Authenticated
         $user = Auth::getUser();
 
         // call model to get Pis using user OrgId property
-        $pis = Pi::getPi($user->OrgId);
+        $pis = Pi::getPi($user->orgId);
+
 
         $temps = array();
         
@@ -52,7 +53,7 @@ class Client extends Authenticated
             // loop through each pi 
             foreach($value as $key => $value){
                 //if the property equals PiId...
-                if($key == 'PiId'){                   
+                if($key == 'uuid'){                   
                     // call model to get temps by sending it the PiId                   
                     array_push($temps, Temperature::getTemps($value));
 
@@ -61,7 +62,7 @@ class Client extends Authenticated
             }
         
         }
-        
+  
 
 
         //instantiate empty string
@@ -75,12 +76,12 @@ class Client extends Authenticated
 
                 foreach($value as $key => $value){
                     
-                    if($key == 'Temp'){
+                    if($key == 'temp_fahrenheit'){
                                            
                     $formattedResults .= $value . ',';                                  
                     }
 
-                    if($key == 'TempTime'){
+                    if($key == 'time'){
                                            
                         $formattedTimeLabels .= $value . ',';                                  
                         }

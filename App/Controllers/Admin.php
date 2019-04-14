@@ -28,6 +28,7 @@ class Admin extends Authenticated
         parent::before();
 
         $this->user = Auth::getUser();
+
     }
 
     /**
@@ -40,8 +41,7 @@ class Admin extends Authenticated
 
                 // call model to get orgs
                 $orgs = Organization::getOrganizations();
-
-
+ 
         View::renderTemplate('Admin/AdminSearch.html', ['user' => $this->user, 'orgs' =>$orgs]);
     }
         /**
@@ -88,7 +88,7 @@ class Admin extends Authenticated
                 if( isset($_SESSION['selectedOrg'])){
                 $pis = Pi::getPi($_SESSION["selectedOrg"]);
                 $selectedOrg = Organization::getOrganizationInfo($_SESSION["selectedOrg"]);
-
+   
                 View::renderTemplate('Admin/AdminCurrentPis.html', ['user' => $this->user, 'pis'=>$pis, 'selectedOrg' => $selectedOrg]);
               
             }else{
@@ -107,14 +107,37 @@ class Admin extends Authenticated
                   if( isset($_SESSION['selectedOrg'])){
 
                   $selectedOrg = Organization::getOrganizationInfo($_SESSION["selectedOrg"]);
-
+                    
                   View::renderTemplate('Admin/AdminOrganizationInfo.html', ['user' => $this->user, 'selectedOrg' => $selectedOrg]);
                 
               }else{
                   $this->redirect('/Admin/index');
               }
+    }    
+    public function addUserAction(){
+        // Take the selected Organization ID and store it in a session. 
+        // This saves the selected Organization ID for multiple pages to use because the Post variable gets reset.
+        if( isset($_SESSION['selectedOrg']))
+        {
+          
+            $selectedOrg = Organization::getOrganizationInfo($_SESSION["selectedOrg"]);
+            View::renderTemplate('Admin/new.html', ['user' => $this->user, 'selectedOrg' => $selectedOrg]);
+        }    
+        else
+        {
+        $this->redirect('/Admin/index');
+        }
+    }
+    public function updateUserAction(){
 
+        Organization::UpdateUser();
+        $this->redirect('/Admin/currentUsers');
+    }
+    public function deleteUserAction(){
 
+        Organization::DeleteUser();
+        $this->redirect('/Admin/currentUsers');
 
     }
+
 }

@@ -4,18 +4,18 @@
 {% block body %}
 
 {% for pi in pis %}
-    <div id="pi{{loop.index0}}" data-RoomID= "{{pi.RoomID}}" data-Bldg = "{{pi.Bldg}}" data-OrgId="{{pi.OrgId}}" data-PiId="{{pi.PiId}}"  hidden></div>
+    <div id="pi{{loop.index0}}" data-RoomID= "{{pi.roomId}}" data-Bldg = "{{pi.bldg}}" data-OrgId="{{pi.OrgId}}" data-PiId="{{pi.piId}}"  hidden></div>
 {% endfor %}
    
 
         
-    <h1>Current Pi's for {{selectedOrg[0].OrgName}}</h1>   
+    <h1>Current Pi's for {{selectedOrg[0].orgName}}</h1>   
     <div>
         <p>Select a Pi to Edit:</p>
         <select id="PiSelect" onchange="DropDownClick()">
             <option value=''disabled selected>Please select a Pi</option>
             {% for pi in pis %}
-            <option value='{{ loop.index0 }}'> Pi {{ pi.PiId }} - {{pi.Bldg}} {{pi.RoomID}} </option>
+            <option value='{{ loop.index0 }}'> Pi {{ pi.uuid }} - {{pi.bldg}} {{pi.roomId}} </option>
             {% endfor %}
         </select>                       
     </div>
