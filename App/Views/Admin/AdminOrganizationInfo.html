@@ -6,10 +6,10 @@
     <h1>Current Information for {{selectedOrg[0].orgName}}</h1>   
 
     <div style="text-align: center"> 
-            <form action="organization/UpdateOrg" id="userForm">
+            <form action="/Admin/updateOrg" id="orgForm" method="POST">
                 
                 Organization ID:
-                <input type="text" id="orgId"name="orgId" value="{{selectedOrg[0].orgId}}" disabled>
+                <input type="text" id="orgId"name="orgId" value="{{selectedOrg[0].orgId}}" readonly>
                 <br>
                 Organization Name:
                 <input type="text" id="OrgName" name="OrgName" value="{{selectedOrg[0].orgName}}" >
@@ -20,6 +20,9 @@
                 City:
                 <input type="text" id="City" name="City" value="{{selectedOrg[0].city}}" >
                 <br>
+                State:
+                <input type="text" id="State" name="State" value="{{selectedOrg[0].state}}" >
+                <br>
                 Zip Code:
                 <input type="text" id="Zip" name="Zip" value="{{selectedOrg[0].zip}}" >
                 <br>
@@ -29,9 +32,7 @@
                 Email :
                 <input type="text" id="email" name="email" value="{{selectedOrg[0].email}}" >
                 <br>
-                <input type="hidden" id="orgId" name="orgId" value="">
-                <!-- <input id="subBtn" type="submit" value="Submit" disabled> -->
-                <button type="subBtn" id="subBtn" form="userForm" value="Submit" >Save Changes <i class="fas fa-save"></i></button>
+                <button type="subBtn" id="subBtn" form="orgForm" value="Submit" >Save Changes <i class="fas fa-save"></i></button>
               </form> 
 
     </div>
@@ -40,7 +41,9 @@
 
 
 {% block bottom %}
-
+<!-- <ul class="nav navbar-nav navbar-right">
+    <li><a href="/Admin/addLocation" >Add a Location <i class="fas fa-plus"></i></a></li>                           
+</ul> -->
 
 
 {% endblock %}   

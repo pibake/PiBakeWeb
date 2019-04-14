@@ -88,7 +88,7 @@ class Admin extends Authenticated
                 if( isset($_SESSION['selectedOrg'])){
                 $pis = Pi::getPi($_SESSION["selectedOrg"]);
                 $selectedOrg = Organization::getOrganizationInfo($_SESSION["selectedOrg"]);
-   
+                
                 View::renderTemplate('Admin/AdminCurrentPis.html', ['user' => $this->user, 'pis'=>$pis, 'selectedOrg' => $selectedOrg]);
               
             }else{
@@ -139,5 +139,66 @@ class Admin extends Authenticated
         $this->redirect('/Admin/currentUsers');
 
     }
+    public function updatePiAction(){
+        Pi::updatePi();
+        $this->redirect('/Admin/currentPis');
 
+    }
+    public function deactivatePiAction(){
+        Pi::deactivatePi();
+        $this->redirect('/Admin/currentPis');
+    }
+    public function insertPiAction(){
+        
+     
+        Pi::addPi();
+        
+    }
+    public function updateOrgAction(){
+        print_r($_POST);
+
+        Organization::updateOrganization();
+        $this->redirect('/Admin/currentOrganizationInfo');
+
+        
+    }
+    public function addPiAction(){
+
+                // Take the selected Organization ID and store it in a session. 
+                // This saves the selected Organization ID for multiple pages to use because the Post varibale gets reset.
+                if( isset($_POST['selectedOrg'])){
+                    $_SESSION["selectedOrg"] = $_POST['selectedOrg'];  
+                  }
+  
+                  if( isset($_SESSION['selectedOrg'])){
+     
+                  $selectedOrg = Organization::getOrganizationInfo($_SESSION["selectedOrg"]);
+                  $openPi = Pi::getOpenPis();
+            
+                  View::renderTemplate('Admin/AdminAddPi.html', ['user' => $this->user, 'selectedOrg' => $selectedOrg, 'pis'=> $openPi]);
+                
+              }else{
+                  $this->redirect('/Admin/index');
+              }
+
+    }
+    public function addLocationAction(){
+
+        // Take the selected Organization ID and store it in a session. 
+        // This saves the selected Organization ID for multiple pages to use because the Post varibale gets reset.
+        if( isset($_POST['selectedOrg'])){
+            $_SESSION["selectedOrg"] = $_POST['selectedOrg'];  
+          }
+
+          if( isset($_SESSION['selectedOrg'])){
+
+          $selectedOrg = Organization::getOrganizationInfo($_SESSION["selectedOrg"]);
+          
+          View::renderTemplate('Admin/AdminOrganizationAddRoom.html', ['user' => $this->user,'selectedOrg' => $selectedOrg]);
+        
+      }else{
+          $this->redirect('/Admin/index');
+      }
+
+}
 }
