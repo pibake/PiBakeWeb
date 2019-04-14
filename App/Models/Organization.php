@@ -40,17 +40,54 @@ class Organization extends \Core\Model
     public static function getOrganizations()
     {
         $sql  = 'SELECT * FROM `organization`';
-
-
-
-
-
         $db = static::getDB();
         $stmt = $db->query($sql);
         
        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $results;
+    }
+
+    public static function getOrganizationInfo($orgId)
+    {
+        $sql  = "SELECT * FROM `organization` WHERE orgId = '$orgId'";
+        $db = static::getDB();
+        $stmt = $db->query($sql);
+        
+       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+
+    public static function getOrganizationUsers($orgId)
+    {
+        $sql  = "SELECT * FROM `users` WHERE OrgId = '$orgId'";
+        $db = static::getDB();
+        $stmt = $db->query($sql);
+        
+       $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+    public static function UpdateUser()
+    {
+        
+        $sql = "UPDATE `users` SET `lastName`= '$_POST[lastname]',`firstName`= '$_POST[firstname]' ,`email`= '$_POST[email]' ,`role`='$_POST[role]' WHERE `userId` = '$_POST[userId]'";
+        
+      
+        $db = static::getDB();
+        $stmt = $db->query($sql);  
+                     
+    }
+
+    public static function DeleteUser()
+    {
+        
+        
+        $sql = "DELETE FROM `users` WHERE userId = '$_POST[userdeleteid]'";
+        $db = static::getDB();
+        $stmt = $db->query($sql);  
+                     
     }
 
     

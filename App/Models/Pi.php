@@ -48,6 +48,29 @@ class Pi extends \Core\Model
 
         return $results;
     }
-
     
+    public static function insert()
+    {
+        $string = file_get_contents("export.json");
+        $json_a = json_decode($string, true);   
+        var_dump($json_a);
+        $CSVinsertString = "";
+
+        foreach($json_a as $key => $value){
+            foreach($value as $key => $value){
+                // echo('This is the ' . $key . ' record');
+                // echo '<br>';
+                foreach($value as $key => $value){
+                    // echo($key . $value); 
+                    $CSVinsertString .= $value . ",";                                      
+                    }  
+                }   
+                echo($CSVinsertString);
+        }
+
+        
+        $sql = "INSERT INTO `tempdata2` (`uuid`, `time`, `temp_fahrenheit`, `temp_celsius`, `date`) VALUES $CSVinsertString ";
+        $db = static::getDB();
+        $stmt = $db->query($sql);
+    }
 }

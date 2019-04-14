@@ -1,0 +1,46 @@
+{% extends "baseAdmin.html" %}
+
+{% block title %}Info for {{selectedOrg[0].orgName}} {% endblock %}
+{% block body %}
+        
+    <h1>Current Information for {{selectedOrg[0].orgName}}</h1>   
+
+    <div style="text-align: center"> 
+            <form action="organization/UpdateOrg" id="userForm">
+                
+                Organization ID:
+                <input type="text" id="orgId"name="orgId" value="{{selectedOrg[0].orgId}}" disabled>
+                <br>
+                Organization Name:
+                <input type="text" id="OrgName" name="OrgName" value="{{selectedOrg[0].orgName}}" >
+                <br>
+                Street:
+                <input type="text" id="Street" name="Street" value="{{selectedOrg[0].street}}" >
+                <br>
+                City:
+                <input type="text" id="City" name="City" value="{{selectedOrg[0].city}}" >
+                <br>
+                Zip Code:
+                <input type="text" id="Zip" name="Zip" value="{{selectedOrg[0].zip}}" >
+                <br>
+                Phone:
+                <input type="text" id="Phone" name="Phone" value="{{selectedOrg[0].phone}}" >
+                <br>
+                Email :
+                <input type="text" id="email" name="email" value="{{selectedOrg[0].email}}" >
+                <br>
+                <input type="hidden" id="orgId" name="orgId" value="">
+                <!-- <input id="subBtn" type="submit" value="Submit" disabled> -->
+                <button type="subBtn" id="subBtn" form="userForm" value="Submit" >Save Changes <i class="fas fa-save"></i></button>
+              </form> 
+
+    </div>
+
+{% endblock %}    
+
+
+{% block bottom %}
+
+
+
+{% endblock %}   

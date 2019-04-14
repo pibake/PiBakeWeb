@@ -20,7 +20,7 @@ class Config
      * Database name
      * @var string
      */
-    const DB_NAME = 'pidata';
+    const DB_NAME = 'pidata2';
 
     /**
      * Database user

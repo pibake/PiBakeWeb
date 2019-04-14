@@ -48,22 +48,30 @@ class User extends \Core\Model
         if (empty($this->errors)) {
 
             $password_hash = password_hash($this->password, PASSWORD_DEFAULT);
-
+            $is_Active = 1;
             $token = new Token();
             $hashed_token = $token->getHash();
             $this->activation_token = $token->getValue();
 
-            $sql = 'INSERT INTO users (name, email, password_hash, activation_hash)
-                    VALUES (:name, :email, :password_hash, :activation_hash)';
+            print_r($_POST);
+            // $sql = 'INSERT INTO users (name, email, password_hash, activation_hash)
+            //         VALUES (:name, :email, :password_hash, :activation_hash)';
+          
+            $sql = 'INSERT INTO `users`(`LastName`, `FirstName`, `Email`, `Role`, `OrgId`, `password_hash`, `is_active`) 
+            VALUES (:lastName, :firstName, :email, :role, :orgId, :password_hash, :is_active)';
+
 
             $db = static::getDB();
             $stmt = $db->prepare($sql);
 
-            $stmt->bindValue(':name', $this->name, PDO::PARAM_STR);
+            $stmt->bindValue(':lastName', $this->lastName, PDO::PARAM_STR);
+            $stmt->bindValue(':firstName', $this->firstName, PDO::PARAM_STR);
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
+            $stmt->bindValue(':role', $this->role, PDO::PARAM_STR);
+            $stmt->bindValue(':orgId', $this->orgId, PDO::PARAM_STR);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
-            $stmt->bindValue(':activation_hash', $hashed_token, PDO::PARAM_STR);
-
+            $stmt->bindValue(':is_active', $is_Active, PDO::PARAM_STR);
+            var_dump($stmt);
             return $stmt->execute();
         }
 
@@ -78,7 +86,7 @@ class User extends \Core\Model
     public function validate()
     {
         // Name
-        if ($this->name == '') {
+        if ($this->firstName == '') {
             $this->errors[] = 'Name is required';
         }
 
@@ -164,8 +172,8 @@ class User extends \Core\Model
     {
         $user = static::findByEmail($email);
 
-        //if ($user) {
-        if ($user && $user->is_active) {
+        if ($user) {
+        //if ($user && $user->is_active) {
             if (password_verify($password, $user->password_hash)) {
                 return $user;
             }
@@ -183,7 +191,7 @@ class User extends \Core\Model
      */
     public static function findByID($id)
     {
-        $sql = 'SELECT * FROM users WHERE id = :id';
+        $sql = 'SELECT * FROM users WHERE userId = :id';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -452,4 +460,5 @@ class User extends \Core\Model
 
         return false;
     }
+   
 }

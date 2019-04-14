@@ -37,10 +37,10 @@ class Temperature extends \Core\Model
     }
 
 
-    public static function getTemps($PiId)
+    public static function getTemps($uuid)
     {
                       
-        $sql = "SELECT * FROM tempdata WHERE PiId = '$PiId'";
+        $sql = "SELECT * FROM tempdata WHERE uuid = '$uuid'";
 
         $db = static::getDB();
         $stmt = $db->query($sql);
@@ -48,5 +48,6 @@ class Temperature extends \Core\Model
        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $results;
+
     }    
 }

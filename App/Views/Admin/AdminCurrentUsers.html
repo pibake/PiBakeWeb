@@ -1,0 +1,120 @@
+{% extends "baseAdmin.html" %}
+
+{% block title %}Current Users{% endblock %}
+{% block body %}
+
+{% for user in users %}
+    <div id="user{{loop.index0}}" data-userId= "{{user.userId}}" data-firstName = "{{user.firstName}}" data-lastName="{{user.lastName}}" data-email="{{user.email}}" data-role="{{user.role}}" hidden></div>
+{% endfor %}
+   
+
+        
+    <h1>Current Users for {{selectedOrg[0].orgName}}</h1>   
+    <div>
+        <p>Select a User to Edit:</p>
+        <select id="UserSelect" onchange="DropDownClick()">
+            <option value='' disabled selected>Please select a user</option>
+            {% for user in users %}
+            <option value='{{ loop.index0 }}'> {{ user.firstName }} {{ user.lastName }}</option>
+            {% endfor %}
+        </select>                       
+    </div>
+    <div style="text-align: center"> 
+        <i class="fas fa-user-circle"></i>
+            <form action="/Admin/UpdateUser" id="userForm" method="post">
+                
+                First name:
+                <input type="text" id="firstName"name="firstname" value="" disabled>
+                <br>
+                Last name:
+                <input type="text" id="lastName" name="lastname" value="" disabled>
+                <br>
+                Email :
+                <input type="text" id="email" name="email" value="" disabled>
+                <br>
+                Role:
+                <select id="role" name="role" disabled>
+                    <option value="Admin">Admin</option>
+                    <option value="Client">Client</option>
+                  </select>
+                <br>
+                <input type="hidden" id="userId" name="userId" value="">
+                <!-- <input id="subBtn" type="submit" value="Submit" disabled> -->
+                <button type="subBtn" id="subBtn" form="userForm" value="Submit" disabled>Save Changes <i class="fas fa-save"></i></button>
+              </form> 
+
+              <form action="/Admin/deleteUser" name="userDeleteForm" id="userDeleteForm" method="post" >
+                <input type="hidden" id="userdeleteid" name="userdeleteid" value="">               
+              </form> 
+
+    </div>
+
+<script>
+     function DropDownClick(){
+
+
+            var index = document.getElementById("UserSelect").value;
+            var selector = "";
+            selector = selector.concat("#","user",index );
+           
+            document.getElementById('userId').value = document.querySelector(selector).dataset.userid;
+
+            document.getElementById('userdeleteid').value = document.querySelector(selector).dataset.userid;
+
+            document.getElementById('firstName').disabled = false;
+            document.getElementById('firstName').value = document.querySelector(selector).dataset.firstname;
+
+            document.getElementById('lastName').disabled = false;
+            document.getElementById('lastName').value = document.querySelector(selector).dataset.lastname;
+
+             document.getElementById('email').disabled = false;
+            document.getElementById('email').value = document.querySelector(selector).dataset.email;
+
+            document.getElementById('role').disabled = false;
+            document.getElementById('role').value = document.querySelector(selector).dataset.role;
+
+            document.getElementById('subBtn').disabled = false;
+     }
+
+</script>
+
+{% endblock %}    
+
+
+{% block bottom %}
+
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="/Admin/addUser" >Add a User <i class="fas fa-user-plus"></i></a></li>
+    <li><button  onclick="onDeleteUserClick()">Delete This User <i class="fas fa-user-minus"></i></button></li>                                    
+</ul>
+
+<script>
+
+    function onDeleteUserClick(){
+        if(document.getElementById('firstName').value != "")
+        {
+            var user = document.getElementById('userId').value;
+
+            
+
+            var r = confirm("Are you sure you want to delete " + document.getElementById('firstName').value + " " + document.getElementById('lastName').value + " ?");
+            if (r == true) 
+            {            
+                
+                
+                document.getElementById("userDeleteForm").submit();
+
+            } 
+            else 
+            {
+                    alert("canceled");
+            }
+        }
+        else
+        {
+            // no user selected
+        }
+    }
+
+</script>
+{% endblock %}   

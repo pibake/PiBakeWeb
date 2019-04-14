@@ -1,0 +1,94 @@
+{% extends "baseAdmin.html" %}
+
+{% block title %}Current Pis{% endblock %}
+{% block body %}
+
+{% for pi in pis %}
+    <div id="pi{{loop.index0}}" data-RoomID= "{{pi.roomId}}" data-Bldg = "{{pi.bldg}}" data-OrgId="{{pi.OrgId}}" data-PiId="{{pi.piId}}"  hidden></div>
+{% endfor %}
+   
+
+        
+    <h1>Current Pi's for {{selectedOrg[0].orgName}}</h1>   
+    <div>
+        <p>Select a Pi to Edit:</p>
+        <select id="PiSelect" onchange="DropDownClick()">
+            <option value=''disabled selected>Please select a Pi</option>
+            {% for pi in pis %}
+            <option value='{{ loop.index0 }}'> Pi {{ pi.uuid }} - {{pi.bldg}} {{pi.roomId}} </option>
+            {% endfor %}
+        </select>                       
+    </div>
+    <div style="text-align: center"> 
+            <form action="pi/UpdatePi" id="piForm">
+                
+                Room ID:
+                <input type="text" id="roomId"name="roomId" value="" disabled>
+                <br>
+                Building:
+                <input type="text" id="building" name="building" value="" disabled>
+                <br>
+                <input type="hidden" id="piId" name="piId" value="">
+                <!-- <input id="subBtn" type="submit" value="Submit" disabled> -->
+                <button type="subBtn" id="subBtn" form="userForm" value="Submit" disabled>Save Changes <i class="fas fa-save"></i></button>
+              </form> 
+
+    </div>
+
+<script>
+     function DropDownClick(){
+
+
+            var index = document.getElementById("PiSelect").value;
+            var selector = "";
+            selector = selector.concat("#","pi",index );
+           
+            document.getElementById('piId').value = document.querySelector(selector).dataset.userid;
+
+            document.getElementById('roomId').disabled = false;
+            document.getElementById('roomId').value = document.querySelector(selector).dataset.roomid;
+
+            document.getElementById('building').disabled = false;
+            document.getElementById('building').value = document.querySelector(selector).dataset.bldg;
+
+           
+            document.getElementById('subBtn').disabled = false;
+     }
+
+</script>
+
+{% endblock %}    
+
+
+{% block bottom %}
+
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="/Signup/new" >Activate a Pi? <i class="fas fa-plus"></i></a></li>
+    <li><a href="" onclick="onDeactivatePi()">De-activate this Pi? <i class="fas fa-minus"></i></a></li>                                    
+</ul>
+
+<script>
+
+    function onDeactivatePi(){
+        if(document.getElementById('roomId').value != "")
+        {
+            var user = document.getElementById('userId').value;
+
+            var r = confirm("Are you sure you want to delete " + document.getElementById('firstName').value + " " + document.getElementById('lastName').value + " ?");
+            if (r == true) 
+            {
+                alert(user);
+            } 
+            else 
+            {
+                    alert("canceled");
+            }
+        }
+        else
+        {
+            // no user selected
+        }
+    }
+
+</script>
+{% endblock %}   

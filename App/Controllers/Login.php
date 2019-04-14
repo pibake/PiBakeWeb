@@ -44,9 +44,9 @@ class Login extends \Core\Controller
 
             // $this->redirect(Auth::getReturnToPage());
 
-            echo($user->Role);
+            echo($user->role);
 
-            if($user->Role == ""){
+            if($user->role == "Admin"){
                 $this->redirect('/Admin/index');    
             }else{
             $this->redirect('/Client/index');                

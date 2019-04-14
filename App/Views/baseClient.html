@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Load base dashboard css -->
     <link rel="stylesheet" href="/css/clientcss.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
@@ -29,34 +32,32 @@
     </nav>
 
 
-<div class="container">
+<div class="container main-display">
     <div class="row" >
 
-        <div id = "PiInfoBox" class="col-lg-2" style="background-color: white; ">
-
+        <div id = "PiInfoBox" class="col-md-2" style="background-color: white; ">
             <i class="fas fa-user-circle"></i>
-            <p>Wecome</p>
+            <p>Welcome</p>
+            <dd>{{ user.firstName }}</dd>
 
-        <div class="col-lg-2" style="background-color: white; ">
-
-            <dd>{{ user.name }}</dd>
         </div>
 
-        <div class="col-lg-5" style="background-color: white;">   
+        <div  id="pi-data-tables" class="col-md-5" style="background-color: white;">   
+
             <div>
-                <select>
-                    <option value='' disabled selected>Please select a Pi</option>
+                <select id="PiSelect" onchange="piDropDownClick()">
+                    <!-- <option value=''disabled selected>Please select a Pi</option> -->
                     {% for pi in Pis %}
-                    <option value='{{ pi.PiId }}'>Pi {{ pi.PiId }}</option>
+                    <option value='{{ loop.index0 }}'>Pi UUID: {{ pi.uuid }}</option>
                     {% endfor %}
                 </select>                       
 
             </div>
 
             <div>
-                    <p>Pi</p>
-                    <p>Location:</p>
-                    <p>Status:</p>
+                    <p id="piId" >Pi UUID: {{ Pis[0].uuid }}</p>
+                    <p id="PiLocation">Location: {{ Pis[0].bldg }}, {{ Pis[0].roomId }} </p>
+                    <p id="PiStatus" style="color: green">Status: Online</p>
             </div>    
 
     <table id="table" class="table table-striped">
@@ -76,35 +77,87 @@
                     <th scope="col">Date</th>
                 </tr>
             </thead>
-        <tbody>
-            <tr>  
-                <td>12:00AM</td>
-                <td>64</td>
-                <td>3/11/2019</td>
-            </tr>                                                                           
-        </tbody>
+            <!-- loop through the nested array of individual temperature records -->           
+            {% for type, records in temps %} 
+                {% if loop.index0  == 0 %}          
+                <tbody id="dataTable{{loop.index0}}">    
+    
+                <!-- grab the first set of arrays -->                    
+                <!-- for the indivdual nested arrays, define the key and print the value-->
+                {% for key, value in records %}
+                <tr>   
+
+                <td>
+                {{ value.time }}
+                </td>
+
+                <td>
+                {{ value.temp_fahrenheit }}
+                </td>
+
+                <td>
+                {{ value.date }}
+                </td> 
+
+                </tr>     
+
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tbody id="dataTable{{loop.index0}}" hidden>   
+   
+                    <!-- grab the first set of arrays -->                    
+                    <!-- for the indivdual nested arrays, define the key and print the value-->
+                    {% for key, value in records %}
+                    <tr>   
+    
+                    <td>
+                    {{ value.time }}
+                    </td>
+    
+                    <td>
+                    {{ value.temp_fahrenheit }}
+                    </td>
+    
+                    <td>
+                    {{ value.date }}
+                    </td> 
+    
+                    </tr>     
+    
+                    {% endfor %}
+                    </tbody>
+                {% endif %} 
+                 
+                                                                
+                
+            {% endfor %}           
     </table>   
 </div> 
-            <div class="col-lg-5" style="background-color: white;">   
+            <div id="pi-data-graph" class="col-md-5" style="background-color: white;">   
                     <canvas id="chartjs-0" width="400" max-height="1200"></canvas>                    
 
-
                     <script>
+
 
   
 
                         //var t =   CSVtoArray('{{resultString}}')
 
+
                         var t =   CSVtoArray('{{RESULTARRAY[0]}}')
+                        var timeLabels =   CSVtoArray('{{timeLabels[0]}}')
+
+                        
                         new Chart(document.getElementById("chartjs-0"),
-                        {"type":"line","data":{"labels":["12AM","1AM","2AM","3AM","4AM","5AM","6AM","7AM","8AM","9AM","10AM","11AM","12AM","1PM","2PM","3PM","4PM","5PM","6PM","7PM","8PM","9PM","10PM","11PM","11:59PM"],
+                        {"type":"line","data":{"labels":timeLabels,
                         "datasets":[{"label":"Temperatures",
                         "data": t,            
                         "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
                         "options":{}});
 
 
-                               
+                             
                         function CSVtoArray(text) {
                             var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
                             var re_value = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
@@ -124,6 +177,15 @@
                             //if (/,\s*$/.test(text)) a.push('');
                             return a;
                             };
+
+
+</script>
+<script>
+                                    
+                                    
+
+
+                                 
                                     /*      =================================
                                     **      ==== Simple Table Controller ====
                                     **      =================================
@@ -139,9 +201,9 @@
                                     **  
                                     */
 
-
+                                    var x = document.getElementById("PiSelect").value;
                                     // get the table element
-                                    var $table = document.getElementById("table"),
+                                    var $table = document.getElementById("dataTable"+x),
                                     // number of rows per page
                                     $n = 10,
                                     // number of rows of the table
@@ -164,7 +226,11 @@
                                     for ($i = $j,$ii = 0; $i < $rowCount; $i++, $ii++)
                                     $tr[$ii] = $table.rows[$i].outerHTML;
                                     // create a div block to hold the buttons
-                                    $table.insertAdjacentHTML("afterend","<div id='buttons'></div");
+                                    var buttonGroup = "<div id='buttons" + x + "'></div";
+                    
+                                    
+
+                                    $table.insertAdjacentHTML("afterend",buttonGroup);
                                     // the first sort, default page is the first one
                                     sort(1);
                                     }
@@ -182,7 +248,7 @@
                                     // now the table has a processed group of rows ..
                                     $table.innerHTML = $rows;
                                     // create the pagination buttons
-                                    document.getElementById("buttons").innerHTML = pageButtons($pageCount-1,$p);
+                                    document.getElementById("buttons"+x).innerHTML = pageButtons($pageCount,$p);
                                     // CSS Stuff
                                     document.getElementById("id"+$p).setAttribute("class","active");
                                     }
@@ -203,8 +269,111 @@
                                     $buttons += "<input type='button' id='id"+$i+"'value='"+$i+"' onclick='sort("+$i+")'>";
                                     $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sort("+($cur + 1)+")' "+$nextDis+">";
                                     return $buttons;
-                                    }                                    
-                    </script>                 
+                                    }             
+                                                        
+</script>
+
+                    <script>
+                        function piDropDownClick() {
+                            var x = document.getElementById("PiSelect").value;
+                            // alert("{{ user.FirstName }} selected " + x);
+                            var result = '{{RESULTARRAY|length}}';
+
+                            var i;
+                            for (i = 0; i < result; i++) { 
+                                if(i == x){
+                                    var tableToShow = "dataTable" + i;
+                                    
+                                    if(document.getElementById(tableToShow) != null)
+                                    {                                        
+                                        //document.getElementById(tableToShow).style.display = "Contents";
+                                        document.getElementById(tableToShow).hidden = false;
+                                    }
+                                    if(document.getElementById("buttons"+i ) != null)
+                                    {
+                                        //document.getElementById("buttons"+i).style.display = "Contents";
+                                        document.getElementById("buttons"+i).hidden = false;
+                                    }
+                                    
+
+                                }else{
+                                    var tableToHide = "dataTable" + i;
+                                    if(document.getElementById(tableToHide) != null)
+                                    {
+                                        //document.getElementById(tableToHide).style.display = "None";
+                                        document.getElementById(tableToHide).hidden = true;
+                                    }
+                                    console.log("test");
+                                    if(document.getElementById("buttons"+i ) != null)
+                                    {
+                                        //document.getElementById("buttons"+i).style.display = "None";   
+                                        document.getElementById("buttons"+i).hidden = true;                                                                      
+                                    }
+
+                                }
+                            }
+                            var selectedIndex = "";
+                            var selectedpiId = "";
+                            var selectedPiLocation = "";
+                            var selectedPiStatus = "";                        
+                            var timeLabels = new Array();
+
+                            switch (x){
+                            case "0":
+                                selectedIndex = "{{RESULTARRAY[0]}}";
+                                selectedpiId = "Pi ID: {{ Pis[0].piId }}";
+                                selectedPiLocation = "Location: {{ Pis[0].bldg }}, {{ Pis[0].roomId }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[0]}}')
+                       
+                                break;
+                            case "1":
+                                
+                                selectedIndex = "{{RESULTARRAY[1]}}";
+                                selectedpiId = "Pi ID: {{ Pis[1].piId }}";
+                                selectedPiLocation = "Location: {{ Pis[1].bldg }}, {{ Pis[1].roomId }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[1]}}')
+                                break;
+                            case "2":
+                                selectedIndex = "{{RESULTARRAY[2]}}";
+                                selectedpiId = "Pi ID: {{ Pis[2].piId }}";
+                                selectedPiLocation = "Location: {{ Pis[2].bldg }}, {{ Pis[2].roomId }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[2]}}')
+                                break;
+                            case "3":
+                                selectedIndex = "{{RESULTARRAY[3]}}";
+                                selectedpiId = "Pi ID: {{ Pis[3].piId }}";
+                                selectedPiLocation = "Location: {{ Pis[3].bldg }}, {{ Pis[3].RoomID }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[3]}}')
+                                break;
+                            case "4":
+                                selectedIndex = "{{RESULTARRAY[4]}}";
+                                selectedpiId = "Pi ID: {{ Pis[4].piId }}";
+                                selectedPiLocation = "{{ Pis[4].bldg }}, {{ Pis[4].RoomID }}"
+                                selectedPiStatus = "Status: Online"
+                                timeLabels =   CSVtoArray('{{timeLabels[4]}}')
+                                break;
+                            }
+
+                            var data =   CSVtoArray(selectedIndex);
+                            document.getElementById("piId").innerHTML = selectedpiId;
+                            document.getElementById("PiLocation").innerHTML = selectedPiLocation;
+                            document.getElementById("PiStatus").innerHTML = selectedPiStatus;
+
+                            new Chart(document.getElementById("chartjs-0"),
+                            {"type":"line","data":{"labels": timeLabels,
+                            "datasets":[{"label":"Temperatures",
+                            "data": data,            
+                            "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
+                            "options":{}});
+                            }        
+
+                            
+                                            
+                    </script>                
             </div>                  
     </div>
 </div>

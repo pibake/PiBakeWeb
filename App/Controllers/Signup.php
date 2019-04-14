@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use \Core\View;
 use \App\Models\User;
+use \App\Models\Organization;
 
 /**
  * Signup controller
@@ -20,7 +21,10 @@ class Signup extends \Core\Controller
      */
     public function newAction()
     {
-        View::renderTemplate('Signup/new.html');
+
+        $orgs = Organization::getOrganizations();
+
+        View::renderTemplate('Signup/new.html', ['orgs' => $orgs]);
     }
 
     /**
@@ -40,6 +44,7 @@ class Signup extends \Core\Controller
 
         } else {
 
+            
             View::renderTemplate('Signup/new.html', [
                 'user' => $user
             ]);

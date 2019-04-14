@@ -1,35 +1,52 @@
 body {
-
     background-color: transparent;
 }
-html{
+
+html:before {
+    z-index: -1;
+    position: fixed;
+    top: 0px;
+    content: "";
+    height: calc(100vh + 90px);
+    width: calc(100vw);
+    left: 0;
     background-repeat: no-repeat;
-    background-size: auto;
-    height: 100%;
-    background: #082a75; /* Old browsers */
-    background: -moz-linear-gradient(-45deg, #082a75 0%, #38bed8 99%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(-45deg, #082a75 0%,#38bed8 99%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(135deg, #082a75 0%,#38bed8 99%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#082a75', endColorstr='#38bed8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    background-size: cover;
+    background: #082a75;
+    /* Old browsers */
+    background: -moz-linear-gradient(-45deg, #082a75 0%, #38bed8 99%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(-45deg, #082a75 0%, #38bed8 99%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(135deg, #082a75 0%, #38bed8 99%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#082a75', endColorstr='#38bed8', GradientType=1);
+    /* IE6-9 fallback on horizontal gradient */
 }
-.container{
+
+.container {
     margin-top: 10%;
     height: 100%;
 }
-.container-fluid{
+
+.container-fluid {
     padding-left: 5px;
     padding-right: 5px;
 }
-img{
+
+img {
     height: 50px;
 }
-.navbar-nav{
+
+.navbar-nav {
     margin-right: 0px;
 }
-.nav>li{
+
+.nav>li {
     padding: 0px 5px 0px 5px;
 }
-form{
+
+form {
     background-color: white;
     padding: 10px 10px 10px 10px;
     border-radius: 5px;
@@ -37,57 +54,70 @@ form{
     min-width: 270px;
     margin: 0 auto;
 }
-div>img{
-    display:block;
-    margin:auto;
-    height: 150px;
 
+div>img {
+    display: block;
+    margin: auto;
+    height: 150px;
 }
-h1{
+
+h1 {
     text-align: center;
 }
-.input{
-        border-left: none;
+
+.input {
+    border-left: none;
     border-right: none;
     border-bottom: 1px solid black;
     border-top: none;
-    box-shadow: transparent; 
+    box-shadow: transparent;
 }
-#loginBtn{
-    display:block;
-    margin:auto;
-    width: 60%;
+
+#loginBtn,
+.pbw-landing-page-btn {
+    display: block;
+    margin: auto;
+    width: 70%;
     background-color: #082a75;
     color: white;
-
 }
-a{
+
+a {
     color: black;
     text-align: center;
 }
-a.nav-link{
+
+a.nav-link {
     color: black;
+    font-size: 18px;
 }
-#forgotPass{
+
+#forgotPass {
     text-align: center;
     padding-top: 10px;
 }
-div.form-group{
-    width: 60%;
+
+div.form-group {
+    width: 70%;
     margin: 20px auto;
-}
-div.form-group>input{
     text-align: center;
 }
+
+div.form-group>input {
+    text-align: center;
+}
+
 .footer {
     position: fixed;
+    z-index: -1;
     left: 0;
-    bottom: 10px;
     width: 100%;
     color: white;
     text-align: center;
+    bottom: 10px;
+}
 
-  }
+
 /*
 .alert {
     border: 1px solid #ccc;
@@ -103,3 +133,38 @@ div.form-group>input{
     background-color: #fcf8e3;
 }
 */
+
+
+/*** START> Login functionality specific styling ***/
+
+
+/** Nav bar Styling **/
+
+a.navbar-brand {
+    padding: 0px 0px 0px 15px;
+}
+
+
+/** Styling of non-form elements in the body of the page **/
+
+
+/* Heading text above the form */
+
+.login-heading {
+    color: #fff;
+    text-transform: capitalize;
+}
+
+
+/** Form styling **/
+
+div.form-group.fg-wide {
+    width: 80%;
+}
+
+label {
+    text-align: center;
+}
+
+
+/*** END> Login functionality specific styling ***/

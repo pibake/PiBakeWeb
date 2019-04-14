@@ -33,6 +33,7 @@ class Items extends Authenticated
     public function indexAction()
     {
 
+
         print_r($_POST);
         View::renderTemplate('Items/index.html');
     }
@@ -44,7 +45,42 @@ class Items extends Authenticated
      */
     public function newAction()
     {
-        echo "new action";
+
+        $string = file_get_contents("export.json");
+        $json_a = json_decode($string, true);   
+        // var_dump($json_a);
+
+        $CSVinsertString = "(";
+
+        $index = 0;
+        foreach($json_a as $key => $value){
+        
+            if($index < 4)
+            {
+                $CSVinsertString .=  "'$value'" . ",";   
+            }
+            else
+            {
+                $CSVinsertString .=  "'$value'" ;     
+            }
+        $index++;
+
+        }
+        $CSVinsertString .= ")";
+
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "pidata";
+
+        // Create connection
+        $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+        $sql = "INSERT INTO `tempdata2` (`uuid`, `date`, `time`, `temp_fahrenheit`, `temp_celsius` ) VALUES $CSVinsertString";
+        echo $sql;
+        mysqli_query($conn, $sql);
+
+        
     }
 
     /**
