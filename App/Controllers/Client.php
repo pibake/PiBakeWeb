@@ -5,8 +5,10 @@ namespace App\Controllers;
 use \Core\View;
 use \App\Auth;
 use \App\Flash;
+
 use App\Models\Temperature;
 use App\Models\Pi;
+
 
 /**
  * Items controller (example)
@@ -36,7 +38,6 @@ class Client extends Authenticated
      */
     public function indexAction()
     {
-
         //get the user object
         $user = Auth::getUser();
 
@@ -98,6 +99,32 @@ class Client extends Authenticated
         //   $formattedResults .=  $temps[$x]['Temp'] . ',';
         // }
         View::renderTemplate('Client/ClientDashboard.html', ['user' => $this->user, 'temps' => $temps, 'resultString'=> $formattedResults, 'Pis' => $pis, 'RESULTARRAY' => $formattedResultsArray, 'timeLabels'=>$timeLabels, 'index'=>0]);
+    }
+
+
+        View::renderTemplate('Client/ClientDashboard.html', [
+            'user' => $this->user
+        ]);
+    }
+
+    /**
+     * Add a new item
+     *
+     * @return void
+     */
+    public function newAction()
+    {
+        echo "new action";
+    }
+
+    /**
+     * Show an item
+     *
+     * @return void
+     */
+    public function showAction()
+    {
+        echo "show action";
     }
 
 }
