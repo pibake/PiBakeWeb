@@ -89,6 +89,12 @@ class Organization extends \Core\Model
         $stmt = $db->query($sql);  
                      
     }
+    public static function updateOrganization(){
 
+
+        $sql = "UPDATE `organization` SET `orgId`='$_POST[orgId]' ,`orgName`='$_POST[OrgName]',`street`='$_POST[Street]',`city`='$_POST[City]',`state`='$_POST[State]',`zip`='$_POST[Zip]',`phone`='$_POST[Phone]',`email`= '$_POST[email]' WHERE orgId = '$_POST[orgId]'";
+        $db = static::getDB();
+        $stmt = $db->query($sql);  
+    }
     
 }

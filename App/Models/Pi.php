@@ -48,29 +48,49 @@ class Pi extends \Core\Model
 
         return $results;
     }
-    
-    public static function insert()
+    public static function updatePi()
     {
-        $string = file_get_contents("export.json");
-        $json_a = json_decode($string, true);   
-        var_dump($json_a);
-        $CSVinsertString = "";
+         $sql = "UPDATE `orgroom` SET `roomId`='$_POST[roomId]', `bldg`='$_POST[building]' WHERE `uuid` = '$_POST[uuid]'";
 
-        foreach($json_a as $key => $value){
-            foreach($value as $key => $value){
-                // echo('This is the ' . $key . ' record');
-                // echo '<br>';
-                foreach($value as $key => $value){
-                    // echo($key . $value); 
-                    $CSVinsertString .= $value . ",";                                      
-                    }  
-                }   
-                echo($CSVinsertString);
-        }
-
-        
-        $sql = "INSERT INTO `tempdata2` (`uuid`, `time`, `temp_fahrenheit`, `temp_celsius`, `date`) VALUES $CSVinsertString ";
         $db = static::getDB();
-        $stmt = $db->query($sql);
+        $stmt = $db->query($sql);       
     }
+    public static function deactivatePi()
+    {
+        
+        $sql = "UPDATE `orgroom` SET `orgId`= null WHERE `uuid` = '$_POST[piuuid]'";
+        echo($sql);
+        $db = static::getDB();
+        $stmt = $db->query($sql);       
+    }
+    public static function addPi()
+    {
+        
+
+        $sql = "SELECT  `piId` FROM `pi` WHERE uuid = '$_POST[uuid]'";
+        $db = static::getDB();
+        $stmt = $db->query($sql); 
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $piId = $results[0]['piId'];
+
+        $sql = "INSERT INTO `orgroom`(`bldg`, `orgId`, `piId`, `uuid`, `roomId`) VALUES ('$_POST[bldg]','$_POST[orgId]',$piId,'$_POST[uuid]','$_POST[roomId]')";
+        $db = static::getDB();
+        $stmt = $db->query($sql); 
+
+          
+    }
+    public static function getOpenPis()
+    {
+             
+        $sql = "SELECT pi.uuid, pi.piId FROM pi LEFT JOIN orgroom ON pi.uuid = orgroom.uuid WHERE orgroom.orgId IS NULL";  
+        $db = static::getDB();
+        $stmt = $db->query($sql); 
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+
 }

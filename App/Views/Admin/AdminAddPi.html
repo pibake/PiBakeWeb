@@ -1,0 +1,36 @@
+{% extends "baseAdmin.html" %}
+
+{% block title %}Info for {{selectedOrg[0].orgName}} {% endblock %}
+{% block body %}
+        
+<h1>Add a Pi for {{selectedOrg[0].orgName}}</h1>   
+    <div style="text-align: center"> 
+        <form action="/Admin/insertPi" id="addPiForm" method="POST">
+            Select a Pi to Add:
+                <select id="PiSelect" name="uuid">
+                    <option value="" selected>Please select a Pi</option>
+                    {% for pi in pis %}
+                    <option value='{{ pi.uuid }}'>UUID: {{ pi.uuid }} </option>
+                    {% endfor %}
+                </select>       
+            <br>                
+            Building Name:
+                <input type="text" id="bldg"name="bldg" value="" required>
+            <br>
+            Room ID:
+                <input type="text" id="roomId" name="roomId" value="" required>
+            <br>
+                <input type="hidden" id="orgId" name="orgId" value="{{selectedOrg[0].orgId}}">
+            <button type="subBtn" id="subBtn" form="addPiForm" value="Submit" >Add Pi <i class="fas fa-plus"></i></button>
+        </form> 
+    </div>
+
+{% endblock %}    
+
+
+{% block bottom %}
+<ul class="nav navbar-nav navbar-right">
+    <li><a href="/Admin/currentPis" >Back <i class="fas fa-arrow-left"></i></a></li>                           
+</ul>
+
+{% endblock %}   
