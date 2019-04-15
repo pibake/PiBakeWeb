@@ -68,7 +68,7 @@
             <!-- loop through the nested array of individual temperature records -->           
             {% for type, records in temps %} 
                 {% if loop.index0  == 0 %}          
-                <tbody id="dataTable{{loop.index0}}">    
+                <tbody id="dataTable{{loop.index0}}" >    
     
                 <!-- grab the first set of arrays -->                    
                 <!-- for the indivdual nested arrays, define the key and print the value-->
@@ -123,7 +123,7 @@
     </table>   
 </div> 
 
-            <div id="pi-data-graph" class="col-md-5" style="background-color: white;"> 
+        <div id="pi-data-graph" class="col-md-5" style="background-color: white;"> 
 
                      <canvas id="chartjs-0" width="400" max-height="1200"></canvas>                    
 
@@ -163,15 +163,17 @@
 
 </script>
 <script>
+    
 //
 //    Code courtesy of: fb.com/bastony
 //
- var x = document.getElementById("PiSelect").length;
- var n = 0;
-    
- 
+    // muli dimesensional array to hold each row of each table
+    $master = [];
+    var x = document.getElementById("PiSelect").length;
+    var n = 0;
+    for(i = 0; i < x; i++){
    // get the table element
-    var $table = document.getElementById("dataTable"+n),
+    var $table = document.getElementById("dataTable"+i),
     // number of rows per page
     $n = 10,
     // number of rows of the table
@@ -182,6 +184,10 @@
     $hasHead = ($firstRow === "TH"),
     // an array to hold each row
     $tr = [],
+
+
+
+
     // loop counters, to start count from rows[1] (2nd row) if the first row has a head tag
     $i,$ii,$j = ($hasHead)?1:0,
     // holds the first row if it has a (<TH>) & nothing if (<TD>)
@@ -194,10 +200,8 @@
     for ($i = $j,$ii = 0; $i < $rowCount; $i++, $ii++)
     $tr[$ii] = $table.rows[$i].outerHTML;
     // create a div block to hold the buttons
-
-    var buttonGroup = "<div id='buttons" + n + "'></div";
-
-
+    $master.push($tr);
+    var buttonGroup = "<div id='buttons" + i + "'></div";
 
     $table.insertAdjacentHTML("afterend",buttonGroup);
     // the first sort, default page is the first one
@@ -211,30 +215,31 @@
     // ($p) is the selected page number. it will be generated when a user clicks a button
     function sort($p) {
       
-   
+        
         /* create ($rows) a variable to hold the group of rows
         ** to be displayed on the selected page,
         ** ($s) the start point .. the first row in each page, Do The Math
         */
         var $rows = $th,$s = (($n * $p)-$n);
         for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
-        $rows += $tr[$i];
+        $rows += $master[i][$i];
+        // $rows += $tr[$i];
 
         // now the table has a processed group of rows ..
         $table.innerHTML = $rows;
         // create the pagination buttons
-        document.getElementById("buttons"+n).innerHTML = pageButtons($pageCount,$p,n);
+        document.getElementById("buttons"+i).innerHTML = pageButtons($pageCount,$p);
         // CSS Stuff
         //document.getElementById(n+"id"+$p).setAttribute("class","active");
         document.getElementById("id"+$p).setAttribute("class","active");
        
     }
-
+}
     //---------------------------------------------------------------------------------------------------------
 
 
     // ($pCount) : number of pages,($cur) : current page, the selected one ..
-    function pageButtons($pCount,$cur,n) {
+    function pageButtons($pCount,$cur) {
         
 
         /* this variables will disable the "Prev" button on 1st page
@@ -261,6 +266,8 @@
     function sortA($p) {
      
      var n = document.getElementById("PiSelect").value; 
+        
+        $table = document.getElementById("dataTable"+n);
      
         /* create ($rows) a variable to hold the group of rows
         ** to be displayed on the selected page,
@@ -268,9 +275,10 @@
         */
         var $rows = $th,$s = (($n * $p)-$n);
         for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
-        $rows += $tr[$i];
-
-       var $table = document.getElementById("dataTable"+n);
+        $rows += $master[n][$i];
+        // $rows += $tr[$i];
+        $test = $master[0][1];
+       
         // now the table has a processed group of rows ..
         $table.innerHTML = $rows;
         // create the pagination buttons
@@ -364,6 +372,7 @@ for (i = 0; i < result; i++) {
         for (i = 0; i < '{{RESULTARRAY|length}}'; i++) { 
             if(i == 0)
             {
+                
                 if(document.getElementById("buttons"+i ) != null)
                 {
                     document.getElementById("buttons"+i).hidden = false;
