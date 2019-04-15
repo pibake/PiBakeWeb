@@ -98,6 +98,7 @@ class Client extends Authenticated
         //   $formattedResults .=  $temps[$x]['Temp'] . ',';
         // }
         View::renderTemplate('Client/ClientDashboard.html', ['user' => $this->user, 'temps' => $temps, 'resultString'=> $formattedResults, 'Pis' => $pis, 'RESULTARRAY' => $formattedResultsArray, 'timeLabels'=>$timeLabels, 'index'=>0]);
+   
     }
 
 }

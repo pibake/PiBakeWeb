@@ -59,15 +59,20 @@ class Pi extends \Core\Model
     {
         
         $sql = "UPDATE `orgroom` SET `orgId`= null WHERE `uuid` = '$_POST[piuuid]'";
-        echo($sql);
+
+
         $db = static::getDB();
-        $stmt = $db->query($sql);       
+        $stmt = $db->query($sql);     
+         $sql = "DELETE FROM `orgroom` WHERE `orgId` IS NULL";       
+        $db = static::getDB();
+        $stmt = $db->query($sql);   
     }
     public static function addPi()
     {
         
 
         $sql = "SELECT  `piId` FROM `pi` WHERE uuid = '$_POST[uuid]'";
+
         $db = static::getDB();
         $stmt = $db->query($sql); 
         

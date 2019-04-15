@@ -39,10 +39,17 @@
                 <select id="PiSelect" onchange="piDropDownClick()">
                     <!-- <option value=''disabled selected>Please select a Pi</option> -->
                     {% for pi in Pis %}
-                    <option value='{{ loop.index0 }}'>Pi UUID: {{ pi.uuid }}</option>
+                    <option id='PiData{{loop.index0}}' value='{{ loop.index0 }}' data-location="{{pi.roomId}}" data-uuid="{{pi.uuid}}">Pi UUID: {{ pi.uuid }}</option>
                     {% endfor %}
                 </select>                       
             </div>
+
+            {% for record in RESULTARRAY %}
+            <div id="record{{loop.index0}}" data-csvstring="{{record}}" hidden></div>
+            {% endfor %}
+            {% for timeLbl in timeLabels %}
+            <div id="timeLbl{{loop.index0}}" data-csvstring="{{timeLbl}}" hidden></div>
+            {% endfor %}
 
             <div>
                     <p id="piId" >Pi UUID: {{ Pis[0].uuid }}</p>
@@ -115,8 +122,10 @@
             {% endfor %}           
     </table>   
 </div> 
-            <div id="pi-data-graph" class="col-md-5" style="background-color: white;">   
-                    <canvas id="chartjs-0" width="400" max-height="1200"></canvas>                    
+
+            <div id="pi-data-graph" class="col-md-5" style="background-color: white;"> 
+
+                     <canvas id="chartjs-0" width="400" max-height="1200"></canvas>                    
 
                     <script>
                         var t =   CSVtoArray('{{RESULTARRAY[0]}}')
@@ -152,207 +161,229 @@
                             return a;
                             };
 
-
 </script>
 <script>
-                                    
-                                    
+//
+//    Code courtesy of: fb.com/bastony
+//
+ var x = document.getElementById("PiSelect").length;
+ var n = 0;
+    
+ 
+   // get the table element
+    var $table = document.getElementById("dataTable"+n),
+    // number of rows per page
+    $n = 10,
+    // number of rows of the table
+    $rowCount = $table.rows.length,
+    // get the first cell's tag name (in the first row)
+    $firstRow = $table.rows[0].firstElementChild.tagName,
+    // boolean var to check if table has a head row
+    $hasHead = ($firstRow === "TH"),
+    // an array to hold each row
+    $tr = [],
+    // loop counters, to start count from rows[1] (2nd row) if the first row has a head tag
+    $i,$ii,$j = ($hasHead)?1:0,
+    // holds the first row if it has a (<TH>) & nothing if (<TD>)
+    $th = ($hasHead?$table.rows[(0)].outerHTML:"");
+    // count the number of pages
+    var $pageCount = Math.ceil($rowCount / $n);
+    // if we had one page only, then we have nothing to do ..
+    if ($pageCount > 1) {
+    // assign each row outHTML (tag name & innerHTML) to the array
+    for ($i = $j,$ii = 0; $i < $rowCount; $i++, $ii++)
+    $tr[$ii] = $table.rows[$i].outerHTML;
+    // create a div block to hold the buttons
+
+    var buttonGroup = "<div id='buttons" + n + "'></div";
 
 
-                                 
-                                    /*      =================================
-                                    **      ==== Simple Table Controller ====
-                                    **      =================================
-                                    **
-                                    **
-                                    **          With Pure JavaScript .. 
-                                    **   
-                                    **
-                                    **      No Libraries or Frameworks needed!
-                                    **
-                                    **
-                                    **              fb.com/bastony
-                                    **  
-                                    */
 
-                                    var x = document.getElementById("PiSelect").value;
-                                    // get the table element
-                                    var $table = document.getElementById("dataTable"+x),
-                                    // number of rows per page
-                                    $n = 10,
-                                    // number of rows of the table
-                                    $rowCount = $table.rows.length,
-                                    // get the first cell's tag name (in the first row)
-                                    $firstRow = $table.rows[0].firstElementChild.tagName,
-                                    // boolean var to check if table has a head row
-                                    $hasHead = ($firstRow === "TH"),
-                                    // an array to hold each row
-                                    $tr = [],
-                                    // loop counters, to start count from rows[1] (2nd row) if the first row has a head tag
-                                    $i,$ii,$j = ($hasHead)?1:0,
-                                    // holds the first row if it has a (<TH>) & nothing if (<TD>)
-                                    $th = ($hasHead?$table.rows[(0)].outerHTML:"");
-                                    // count the number of pages
-                                    var $pageCount = Math.ceil($rowCount / $n);
-                                    // if we had one page only, then we have nothing to do ..
-                                    if ($pageCount > 1) {
-                                    // assign each row outHTML (tag name & innerHTML) to the array
-                                    for ($i = $j,$ii = 0; $i < $rowCount; $i++, $ii++)
-                                    $tr[$ii] = $table.rows[$i].outerHTML;
-                                    // create a div block to hold the buttons
-                                    var buttonGroup = "<div id='buttons" + x + "'></div";
-                    
-                                    
+    $table.insertAdjacentHTML("afterend",buttonGroup);
+    // the first sort, default page is the first one
+    sort(1);
 
-                                    $table.insertAdjacentHTML("afterend",buttonGroup);
-                                    // the first sort, default page is the first one
-                                    sort(1);
-                                    }
+    
+    }
 
-                                    // ($p) is the selected page number. it will be generated when a user clicks a button
-                                    function sort($p) {
-                                    /* create ($rows) a variable to hold the group of rows
-                                    ** to be displayed on the selected page,
-                                    ** ($s) the start point .. the first row in each page, Do The Math
-                                    */
-                                    var $rows = $th,$s = (($n * $p)-$n);
-                                    for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
-                                    $rows += $tr[$i];
+    //---------------------------------------------------------------------------------------------------------
 
-                                    // now the table has a processed group of rows ..
-                                    $table.innerHTML = $rows;
-                                    // create the pagination buttons
-                                    document.getElementById("buttons"+x).innerHTML = pageButtons($pageCount,$p);
-                                    // CSS Stuff
-                                    document.getElementById("id"+$p).setAttribute("class","active");
-                                    }
+    // ($p) is the selected page number. it will be generated when a user clicks a button
+    function sort($p) {
+      
+   
+        /* create ($rows) a variable to hold the group of rows
+        ** to be displayed on the selected page,
+        ** ($s) the start point .. the first row in each page, Do The Math
+        */
+        var $rows = $th,$s = (($n * $p)-$n);
+        for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
+        $rows += $tr[$i];
+
+        // now the table has a processed group of rows ..
+        $table.innerHTML = $rows;
+        // create the pagination buttons
+        document.getElementById("buttons"+n).innerHTML = pageButtons($pageCount,$p,n);
+        // CSS Stuff
+        //document.getElementById(n+"id"+$p).setAttribute("class","active");
+        document.getElementById("id"+$p).setAttribute("class","active");
+       
+    }
+
+    //---------------------------------------------------------------------------------------------------------
 
 
-                                    // ($pCount) : number of pages,($cur) : current page, the selected one ..
-                                    function pageButtons($pCount,$cur) {
-                                    /* this variables will disable the "Prev" button on 1st page
-                                    and "next" button on the last one */
-                                    var $prevDis = ($cur == 1)?"disabled":"",
-                                    $nextDis = ($cur == $pCount)?"disabled":"",
-                                    /* this ($buttons) will hold every single button needed
-                                    ** it will creates each button and sets the onclick attribute
-                                    ** to the "sort" function with a special ($p) number..
-                                    */
-                                    $buttons = "<input type='button' value='&lt;&lt; Prev' onclick='sort("+($cur - 1)+")' "+$prevDis+">";
-                                    for ($i=1; $i<=$pCount;$i++)
-                                    $buttons += "<input type='button' id='id"+$i+"'value='"+$i+"' onclick='sort("+$i+")'>";
-                                    $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sort("+($cur + 1)+")' "+$nextDis+">";
-                                    return $buttons;
-                                    }             
-                                                        
+    // ($pCount) : number of pages,($cur) : current page, the selected one ..
+    function pageButtons($pCount,$cur,n) {
+        
+
+        /* this variables will disable the "Prev" button on 1st page
+        and "next" button on the last one */
+        var $prevDis = ($cur == 1)?"disabled":"",
+        $nextDis = ($cur == $pCount)?"disabled":"",
+        /* this ($buttons) will hold every single button needed
+        ** it will creates each button and sets the onclick attribute
+        ** to the "sort" function with a special ($p) number..
+        */
+        $buttons = "<input type='button' value='&lt;&lt; Prev' onclick='sortA("+($cur - 1)+")' "+$prevDis+">";
+        for ($i=1; $i<=$pCount;$i++)
+        // $buttons += "<input type='button' id="+n+"id"+$i+" value='"+$i+"' onclick='sortA("+$i+")'>";
+        $buttons += "<input type='button' id= id"+$i+" value='"+$i+"' onclick='sortA("+$i+")'>";
+        $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sortA("+($cur + 1)+")' "+$nextDis+">";
+        return $buttons;
+    }   
+
+    //---------------------------------------------------------------------------------------------------------
+                                                                                   
 </script>
 
-                    <script>
-                        function piDropDownClick() {
-                            var x = document.getElementById("PiSelect").value;
-                            // alert("{{ user.FirstName }} selected " + x);
-                            var result = '{{RESULTARRAY|length}}';
+<script>
+    function sortA($p) {
+     
+     var n = document.getElementById("PiSelect").value; 
+     
+        /* create ($rows) a variable to hold the group of rows
+        ** to be displayed on the selected page,
+        ** ($s) the start point .. the first row in each page, Do The Math
+        */
+        var $rows = $th,$s = (($n * $p)-$n);
+        for ($i = $s; $i < ($s+$n) && $i < $tr.length; $i++)
+        $rows += $tr[$i];
 
-                            var i;
-                            for (i = 0; i < result; i++) { 
-                                if(i == x){
-                                    var tableToShow = "dataTable" + i;
-                                    
-                                    if(document.getElementById(tableToShow) != null)
-                                    {                                        
-                                        //document.getElementById(tableToShow).style.display = "Contents";
-                                        document.getElementById(tableToShow).hidden = false;
-                                    }
-                                    if(document.getElementById("buttons"+i ) != null)
-                                    {
-                                        //document.getElementById("buttons"+i).style.display = "Contents";
-                                        document.getElementById("buttons"+i).hidden = false;
-                                    }
-                                    
+       var $table = document.getElementById("dataTable"+n);
+        // now the table has a processed group of rows ..
+        $table.innerHTML = $rows;
+        // create the pagination buttons
+        document.getElementById("buttons"+n).innerHTML = pageButtons($pageCount,$p);
+        // CSS Stuff
+        // document.getElementById(n+"id"+$p).setAttribute("class","active");
+        document.getElementById("id"+$p).setAttribute("class","active");
+       
+    }
+ 
+    //---------------------------------------------------------------------------------------------------------
+ 
+    // ($pCount) : number of pages,($cur) : current page, the selected one ..
+    function pageButtons($pCount,$cur) {
+        
+ 
+        /* this variables will disable the "Prev" button on 1st page
+        and "next" button on the last one */
+        var $prevDis = ($cur == 1)?"disabled":"",
+        $nextDis = ($cur == $pCount)?"disabled":"",
+        /* this ($buttons) will hold every single button needed
+        ** it will creates each button and sets the onclick attribute
+        ** to the "sort" function with a special ($p) number..
+        */
+        $buttons = "<input type='button' value='&lt;&lt; Prev' onclick='sortA("+($cur - 1)+")' "+$prevDis+">";
+        for ($i=1; $i<=$pCount;$i++)
+        // $buttons += "<input type='button' id="+n+"id"+$i+" value='"+$i+"' onclick='sortA("+$i+")'>";
+        $buttons += "<input type='button' id=id"+$i+" value='"+$i+"' onclick='sortA("+$i+")'>";
+        $buttons += "<input type='button' value='Next &gt;&gt;' onclick='sortA("+($cur + 1)+")' "+$nextDis+">";
+        return $buttons;
+    }   
+ 
+    //---------------------------------------------------------------------------------------------------------
+function piDropDownClick() {
 
-                                }else{
-                                    var tableToHide = "dataTable" + i;
-                                    if(document.getElementById(tableToHide) != null)
-                                    {
-                                        //document.getElementById(tableToHide).style.display = "None";
-                                        document.getElementById(tableToHide).hidden = true;
-                                    }
-                                    console.log("test");
-                                    if(document.getElementById("buttons"+i ) != null)
-                                    {
-                                        //document.getElementById("buttons"+i).style.display = "None";   
-                                        document.getElementById("buttons"+i).hidden = true;                                                                      
-                                    }
+var x = document.getElementById("PiSelect").value;
 
-                                }
-                            }
-                            var selectedIndex = "";
-                            var selectedpiId = "";
-                            var selectedPiLocation = "";
-                            var selectedPiStatus = "";                        
-                            var timeLabels = new Array();
+var result = '{{RESULTARRAY|length}}';
 
-                            switch (x){
-                            case "0":
-                                selectedIndex = "{{RESULTARRAY[0]}}";
-                                selectedpiId = "Pi ID: {{ Pis[0].piId }}";
-                                selectedPiLocation = "Location: {{ Pis[0].bldg }}, {{ Pis[0].roomId }}"
-                                selectedPiStatus = "Status: Online"
-                                timeLabels =   CSVtoArray('{{timeLabels[0]}}')
-                       
-                                break;
-                            case "1":
-                                
-                                selectedIndex = "{{RESULTARRAY[1]}}";
-                                selectedpiId = "Pi ID: {{ Pis[1].piId }}";
-                                selectedPiLocation = "Location: {{ Pis[1].bldg }}, {{ Pis[1].roomId }}"
-                                selectedPiStatus = "Status: Online"
-                                timeLabels =   CSVtoArray('{{timeLabels[1]}}')
-                                break;
-                            case "2":
-                                selectedIndex = "{{RESULTARRAY[2]}}";
-                                selectedpiId = "Pi ID: {{ Pis[2].piId }}";
-                                selectedPiLocation = "Location: {{ Pis[2].bldg }}, {{ Pis[2].roomId }}"
-                                selectedPiStatus = "Status: Online"
-                                timeLabels =   CSVtoArray('{{timeLabels[2]}}')
-                                break;
-                            case "3":
-                                selectedIndex = "{{RESULTARRAY[3]}}";
-                                selectedpiId = "Pi ID: {{ Pis[3].piId }}";
-                                selectedPiLocation = "Location: {{ Pis[3].bldg }}, {{ Pis[3].RoomID }}"
-                                selectedPiStatus = "Status: Online"
-                                timeLabels =   CSVtoArray('{{timeLabels[3]}}')
-                                break;
-                            case "4":
-                                selectedIndex = "{{RESULTARRAY[4]}}";
-                                selectedpiId = "Pi ID: {{ Pis[4].piId }}";
-                                selectedPiLocation = "{{ Pis[4].bldg }}, {{ Pis[4].RoomID }}"
-                                selectedPiStatus = "Status: Online"
-                                timeLabels =   CSVtoArray('{{timeLabels[4]}}')
-                                break;
-                            }
+var i;
+for (i = 0; i < result; i++) { 
+    if(i == x)
+        {
+        var tableToShow = "dataTable" + i;
+        if(document.getElementById(tableToShow) != null)
+        {                                        
+            document.getElementById(tableToShow).hidden = false;
+        }
+        if(document.getElementById("buttons"+i ) != null)
+        {
+            document.getElementById("buttons"+i).hidden = false;
+        }
+    }
+    else
+    {
+        var tableToHide = "dataTable" + i;
+        if(document.getElementById(tableToHide) != null)
+        {
+            document.getElementById(tableToHide).hidden = true;
+        }
+     
+        if(document.getElementById("buttons"+i ) != null)
+        {
+            document.getElementById("buttons"+i).hidden = true; 
+        }
+    }
+}
 
-                            var data =   CSVtoArray(selectedIndex);
-                            document.getElementById("piId").innerHTML = selectedpiId;
-                            document.getElementById("PiLocation").innerHTML = selectedPiLocation;
-                            document.getElementById("PiStatus").innerHTML = selectedPiStatus;
+    var data =   CSVtoArray(document.querySelector("#record"+x).dataset.csvstring);
+    var timeLabels =   CSVtoArray(document.querySelector("#timeLbl"+x).dataset.csvstring);
 
-                            new Chart(document.getElementById("chartjs-0"),
-                            {"type":"line","data":{"labels": timeLabels,
-                            "datasets":[{"label":"Temperatures",
-                            "data": data,            
-                            "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
-                            "options":{}});
-                            }        
+    document.getElementById("piId").innerHTML = document.querySelector("#PiData"+x).dataset.uuid;
+    document.getElementById("PiLocation").innerHTML = document.querySelector("#PiData"+x).dataset.location;
+    document.getElementById("PiStatus").innerHTML = "Online";
 
-                            
-                                            
-                    </script>                
+    new Chart(document.getElementById("chartjs-0"),
+    {"type":"line","data":{"labels": timeLabels,
+    "datasets":[{"label":"Temperatures",
+    "data": data,            
+    "fill":false,"borderColor":"rgb(75, 192, 192)","lineTension":0.1}]},
+    "options":{}});
+}        
+
+
+
+ 
+</script>      
+<script>
+    window.addEventListener('load', (event) => {
+        var i;
+        for (i = 0; i < '{{RESULTARRAY|length}}'; i++) { 
+            if(i == 0)
+            {
+                if(document.getElementById("buttons"+i ) != null)
+                {
+                    document.getElementById("buttons"+i).hidden = false;
+                }
+            }
+            else
+            {
+                if(document.getElementById("buttons"+i ) != null)
+                {
+                    document.getElementById("buttons"+i).hidden = true; 
+                }
+            }
+        }
+       
+    });
+</script>          
             </div>                  
     </div>
 </div>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-
     <footer class="footer">PiBake 2019 &#174;</footer>
 </body>
 </html>

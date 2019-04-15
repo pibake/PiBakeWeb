@@ -152,7 +152,7 @@ class Admin extends Authenticated
         
      
         Pi::addPi();
-        
+        $this->redirect('/Admin/currentPis');
     }
     public function updateOrgAction(){
         print_r($_POST);
