@@ -47,8 +47,10 @@ class Items extends Authenticated
     {
 
         $string = file_get_contents("export.json");
+    
         $json_a = json_decode($string, true);   
-        // var_dump($json_a);
+        
+       
 
         $CSVinsertString = "(";
 
@@ -67,6 +69,7 @@ class Items extends Authenticated
 
         }
         $CSVinsertString .= ")";
+        
 
         $servername = "localhost";
         $username = "root";
@@ -79,6 +82,53 @@ class Items extends Authenticated
         $sql = "INSERT INTO `tempdata2` (`uuid`, `date`, `time`, `temp_fahrenheit`, `temp_celsius` ) VALUES $CSVinsertString";
         echo $sql;
         mysqli_query($conn, $sql);
+
+        
+    }
+    public function testAction()
+    {
+
+       
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "pidata2";
+
+        // Create connection
+        $conn = mysqli_connect($servername, $username, $password, $dbname);
+
+        $string = file_get_contents("export.json");
+    
+        $json_a = json_decode($string, true);   
+        
+        
+foreach($json_a as $key => $value){
+    if($key == 'uuid')
+    {
+
+        $sql = "SELECT * FROM `pi` WHERE `uuid` = '$value'";
+
+        $results = mysqli_query($conn, $sql);
+
+        if(mysqli_num_rows($results) == 0)
+        {
+           //insert statement here!
+           echo("insert statement");
+        }
+        else
+        {
+            //the uuid already exists
+            echo("<br>");
+            var_dump(mysqli_fetch_assoc($results));
+        }
+    }
+}
+        
+        
+
+
+
+       
 
         
     }
