@@ -1,120 +1,109 @@
-{% extends "baseAdmin.html" %}
-
-{% block title %}Current Users{% endblock %}
-{% block body %}
-
-{% for user in users %}
-    <div id="user{{loop.index0}}" data-userId= "{{user.userId}}" data-firstName = "{{user.firstName}}" data-lastName="{{user.lastName}}" data-email="{{user.email}}" data-role="{{user.role}}" hidden></div>
+{% extends "baseAdmin.html" %} {% block title %}Current Users{% endblock %} {% block body %} {% for user in users %}
+<div id="user{{loop.index0}}" data-userId="{{user.userId}}" data-firstName="{{user.firstName}}" data-lastName="{{user.lastName}}" data-email="{{user.email}}" data-role="{{user.role}}" hidden></div>
 {% endfor %}
-   
 
-        
-    <h1>Current Users for {{selectedOrg[0].orgName}}</h1>   
-    <div>
-        <p>Select a User to Edit:</p>
-        <select id="UserSelect" onchange="DropDownClick()">
+
+
+<h1>Current Users for {{selectedOrg[0].orgName}}</h1>
+<div>
+    <p>Select a User to Edit:</p>
+    <select id="UserSelect" onchange="DropDownClick()">
             <option value='' disabled selected>Please select a user</option>
             {% for user in users %}
             <option value='{{ loop.index0 }}'> {{ user.firstName }} {{ user.lastName }}</option>
             {% endfor %}
-        </select>                       
-    </div>
-    <div style="text-align: center"> 
-        <i class="fas fa-user-circle"></i>
-            <form action="/Admin/UpdateUser" id="userForm" method="post">
-                
-                First name:
-                <input type="text" id="firstName"name="firstname" value="" disabled>
-                <br>
-                Last name:
-                <input type="text" id="lastName" name="lastname" value="" disabled>
-                <br>
-                Email :
-                <input type="text" id="email" name="email" value="" disabled>
-                <br>
-                Role:
-                <select id="role" name="role" disabled>
+        </select>
+</div>
+<div style="text-align: center">
+    <i class="fas fa-user-circle"></i>
+    <form action="/Admin/UpdateUser" id="userForm" method="post" class="form-horizontal" style="width: 40%;">
+        <div class="form-group col-sm-6 pbw-no-horz-margin">
+            <label for="firstName" class="control-label">First Name</label>
+            <input id="firstName" name="firstname" placeholder="First Name" autofocus value="" disabled class="form-control" />
+        </div>
+        <div class="form-group col-sm-6 pbw-no-horz-margin">
+            <label for="lastName" class="control-label">Last Name</label>
+            <input id="lastName" name="lastname" placeholder="Last Name" autofocus value="" disabled class="form-control" />
+        </div>
+        <div class="form-group col-sm-12 pbw-no-horz-margin">
+            <label for="email">Email address</label>
+            <input id="email" name="email" placeholder="email address" value="" disabled type="email" class="form-control" />
+        </div>
+        <div class="form-group col-sm-12 pbw-no-horz-margin">
+            <label for="role">Role:</label>
+            <select id="role" name="role" disabled style="padding: 5px 20px;">
                     <option value="Admin">Admin</option>
                     <option value="Client">Client</option>
-                  </select>
-                <br>
-                <input type="hidden" id="userId" name="userId" value="">
-                <!-- <input id="subBtn" type="submit" value="Submit" disabled> -->
-                <button type="subBtn" id="subBtn" form="userForm" value="Submit" disabled>Save Changes <i class="fas fa-save"></i></button>
-              </form> 
+                </select>
+        </div>
+        <br>
+        <input type="hidden" id="userId" name="userId" value="">
 
-              <form action="/Admin/deleteUser" name="userDeleteForm" id="userDeleteForm" method="post" >
-                <input type="hidden" id="userdeleteid" name="userdeleteid" value="">               
-              </form> 
+        <button type="subBtn" id="subBtn" form="userForm" value="Submit" class="btn pbw-buttonize" disabled>Save Changes <i class="fas fa-save"></i></button>
+    </form>
 
-    </div>
+    <form action="/Admin/deleteUser" name="userDeleteForm" id="userDeleteForm" method="post">
+        <input type="hidden" id="userdeleteid" name="userdeleteid" value="">
+    </form>
+
+</div>
 
 <script>
-     function DropDownClick(){
+    function DropDownClick() {
 
 
-            var index = document.getElementById("UserSelect").value;
-            var selector = "";
-            selector = selector.concat("#","user",index );
-           
-            document.getElementById('userId').value = document.querySelector(selector).dataset.userid;
+        var index = document.getElementById("UserSelect").value;
+        var selector = "";
+        selector = selector.concat("#", "user", index);
 
-            document.getElementById('userdeleteid').value = document.querySelector(selector).dataset.userid;
+        document.getElementById('userId').value = document.querySelector(selector).dataset.userid;
 
-            document.getElementById('firstName').disabled = false;
-            document.getElementById('firstName').value = document.querySelector(selector).dataset.firstname;
+        document.getElementById('userdeleteid').value = document.querySelector(selector).dataset.userid;
 
-            document.getElementById('lastName').disabled = false;
-            document.getElementById('lastName').value = document.querySelector(selector).dataset.lastname;
+        document.getElementById('firstName').disabled = false;
+        document.getElementById('firstName').value = document.querySelector(selector).dataset.firstname;
 
-             document.getElementById('email').disabled = false;
-            document.getElementById('email').value = document.querySelector(selector).dataset.email;
+        document.getElementById('lastName').disabled = false;
+        document.getElementById('lastName').value = document.querySelector(selector).dataset.lastname;
 
-            document.getElementById('role').disabled = false;
-            document.getElementById('role').value = document.querySelector(selector).dataset.role;
+        document.getElementById('email').disabled = false;
+        document.getElementById('email').value = document.querySelector(selector).dataset.email;
 
-            document.getElementById('subBtn').disabled = false;
-     }
+        document.getElementById('role').disabled = false;
+        document.getElementById('role').value = document.querySelector(selector).dataset.role;
 
+        document.getElementById('subBtn').disabled = false;
+    }
 </script>
 
-{% endblock %}    
+{% endblock %} {% block bottom %}
 
-
-{% block bottom %}
-
-<ul class="nav navbar-nav navbar-right">
-    <li><a href="/Admin/addUser" >Add a User <i class="fas fa-user-plus"></i></a></li>
-    <li><button  onclick="onDeleteUserClick()">Delete This User <i class="fas fa-user-minus"></i></button></li>                                    
+<ul class="nav navbar-nav pbw-centered-nav">
+    <li><button class="btn pbw-buttonize"><a href="/Admin/addUser">Add a User <i class="fas fa-user-plus"></i></a></button></li>
+    <li><button onclick="onDeleteUserClick()" class="btn pbw-buttonize">Delete This User <i class="fas fa-user-minus"></i></button></li>
 </ul>
 
 <script>
-
-    function onDeleteUserClick(){
-        if(document.getElementById('firstName').value != "")
-        {
+    function onDeleteUserClick() {
+        if (document.getElementById('firstName').value != "") {
             var user = document.getElementById('userId').value;
 
-            
+
 
             var r = confirm("Are you sure you want to delete " + document.getElementById('firstName').value + " " + document.getElementById('lastName').value + " ?");
-            if (r == true) 
-            {            
-                
-                
+            if (r == true) {
+
+
                 document.getElementById("userDeleteForm").submit();
 
-            } 
-            else 
-            {
-                    alert("canceled");
+            } else {
+                alert("canceled");
             }
-        }
-        else
-        {
+        } else {
             // no user selected
+            alert("No user selected!");
+            this.preventDefault();
         }
     }
-
 </script>
-{% endblock %}   
+{% endblock %}

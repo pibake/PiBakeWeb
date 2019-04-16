@@ -1,42 +1,38 @@
-{% extends "baseAdmin.html" %}
+{% extends "baseAdmin.html" %} {% block title %}Log in{% endblock %} {% block body %}
 
-{% block title %}Log in{% endblock %}
-{% block body %}
-
-<div> 
+<div>
     <input type="text" placeholder="Search..">
 </div>
 
 <table id="table" class="table table-striped">
-        <thead>
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">City</th>
+            <th scope="col">Email</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody id="org-listing">
+        <form id="selectForm" name="selectForm" method="Post" action="/Admin/currentUsers">
+            <input type="hidden" name="selectedOrg" id="selectedOrg" value=""> {% for org in orgs %}
             <tr>
-                <th scope="col">Name</th>
-                <th scope="col">City</th>
-                <th scope="col">Email</th>
-                <th scope="col"></th>
+                <td>{{ org.orgName }}</td>
+                <td>{{ org.city }}</td>
+                <td>{{ org.email }}</td>
+                <td style="word-break: normal"><button type="button" value="{{org.orgId}}">select</button></td>
             </tr>
-        </thead>
-    <tbody>
-          <form id="selectForm" name="selectForm" method="Post" action="/Admin/currentUsers">
-              <input type="hidden" name="selectedOrg" id="selectedOrg" value="">
-                {% for org in orgs %}
-                        <tr>  
-                            <td>{{ org.orgName }}</td>
-                            <td>{{ org.city }}</td>
-                            <td>{{ org.email }}</td>
-                            <td><button type="button" value="{{org.orgId}}">select</button></td>
-                        </tr>      
-                {% endfor %}
-          </form>  
-</tbody>
+            {% endfor %}
+        </form>
+    </tbody>
 </table>
 <script>
-        $("button").click(function() {          
-            var fired_button = $(this).val();
+    $("button").click(function() {
+        var fired_button = $(this).val();
         //    alert(fired_button);
-            document.selectForm.selectedOrg.value = fired_button;          
+        document.selectForm.selectedOrg.value = fired_button;
         document.forms["selectForm"].submit();
-       });  
-       </script> 
+    });
+</script>
 
 {% endblock %}
