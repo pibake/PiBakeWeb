@@ -46,7 +46,7 @@ class Temperature extends \Core\Model
         $stmt = $db->query($sql);
         
        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+       
         return $results;
 
     }    
