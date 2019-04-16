@@ -1,98 +1,87 @@
-{% extends "baseAdmin.html" %}
-
-{% block title %}Current Pis{% endblock %}
-{% block body %}
-
-{% for pi in pis %}
-    <div id="pi{{loop.index0}}" data-RoomID= "{{pi.roomId}}" data-Bldg = "{{pi.bldg}}" data-OrgId="{{pi.OrgId}}" data-PiId="{{pi.piId}}" data-uuid="{{pi.uuid}}"  hidden></div>
+{% extends "baseAdmin.html" %} {% block title %}Current Pis{% endblock %} {% block body %} {% for pi in pis %}
+<div id="pi{{loop.index0}}" data-RoomID="{{pi.roomId}}" data-Bldg="{{pi.bldg}}" data-OrgId="{{pi.OrgId}}" data-PiId="{{pi.piId}}" data-uuid="{{pi.uuid}}" hidden></div>
 {% endfor %}
-   
 
-        
-    <h1>Current Pi's for {{selectedOrg[0].orgName}}</h1>   
-    <div>
-        <p>Select a Pi to Edit:</p>
-        <select id="PiSelect" onchange="DropDownClick()">
+
+
+<h1>Current Pi's for {{selectedOrg[0].orgName}}</h1>
+<div>
+    <p>Select a Pi to Edit:</p>
+    <select id="PiSelect" onchange="DropDownClick()">
             <option value=''disabled selected>Please select a Pi</option>
             {% for pi in pis %}
             <option value='{{ loop.index0 }}'> Pi {{ pi.uuid }} - {{pi.bldg}} {{pi.roomId}} </option>
             {% endfor %}
-        </select>                       
-    </div>
-    <div style="text-align: center"> 
-            <form action="/Admin/UpdatePi" id="piForm" method="post">
-                
-                Room ID:
-                <input type="text" id="roomId"name="roomId" value="" disabled>
-                <br>
-                Building:
-                <input type="text" id="building" name="building" value="" disabled>
-                <br>
-                <input type="hidden" id="uuid" name="uuid" value="1">
-                <!-- <input id="subBtn" type="submit" value="Submit" disabled> -->
-                <button type="subBtn" id="subBtn" form="piForm" value="Submit" disabled>Save Changes <i class="fas fa-save"></i></button>
-              </form> 
+        </select>
+</div>
+<div style="text-align: center">
+    <form action="/Admin/UpdatePi" id="piForm" method="post" class="form-horizontal" style="width: 40%;">
+        <div class="form-group col-sm-6 pbw-no-horz-margin">
+            <label for="roomId" class="control-label">Room ID</label>
+            <input id="roomId" name="roomId" placeholder="Room ID" autofocus value="" disabled class="form-control" />
+        </div>
+        <div class="form-group col-sm-6 pbw-no-horz-margin">
+            <label for="building" class="control-label">Building</label>
+            <input id="building" name="building" placeholder="Building Name" autofocus value="" disabled class="form-control" />
+        </div>
+        <br>
+        <input type="hidden" id="uuid" name="uuid" value="1">
+        <button type="subBtn" id="subBtn" form="piForm" value="Submit" class="btn pbw-buttonize" disabled>Save Changes <i class="fas fa-save"></i></button>
+    </form>
 
-              <form action="/Admin/deactivatePi" name="deactivatPi" id="deactivatPi" method="post" >
-                <input type="hidden" id="piuuid" name="piuuid" value="">               
-              </form> 
-    </div>
+    <form action="/Admin/deactivatePi" name="deactivatPi" id="deactivatPi" method="post">
+        <input type="hidden" id="piuuid" name="piuuid" value="">
+    </form>
+</div>
 
 <script>
-     function DropDownClick(){
+    function DropDownClick() {
 
 
-            var index = document.getElementById("PiSelect").value;
-            var selector = "";
-            selector = selector.concat("#","pi",index );
-           
-            document.getElementById('uuid').value = document.querySelector(selector).dataset.uuid;
-            document.getElementById('piuuid').value = document.querySelector(selector).dataset.uuid;
+        var index = document.getElementById("PiSelect").value;
+        var selector = "";
+        selector = selector.concat("#", "pi", index);
 
-            document.getElementById('roomId').disabled = false;
-            document.getElementById('roomId').value = document.querySelector(selector).dataset.roomid;
+        document.getElementById('uuid').value = document.querySelector(selector).dataset.uuid;
+        document.getElementById('piuuid').value = document.querySelector(selector).dataset.uuid;
 
-            document.getElementById('building').disabled = false;
-            document.getElementById('building').value = document.querySelector(selector).dataset.bldg;
+        document.getElementById('roomId').disabled = false;
+        document.getElementById('roomId').value = document.querySelector(selector).dataset.roomid;
 
-           
-            document.getElementById('subBtn').disabled = false;
-     }
+        document.getElementById('building').disabled = false;
+        document.getElementById('building').value = document.querySelector(selector).dataset.bldg;
 
+
+        document.getElementById('subBtn').disabled = false;
+    }
 </script>
 
-{% endblock %}    
+{% endblock %} {% block bottom %}
 
+<!-- <ul class="nav navbar-nav navbar-right">
+    <li><a href="/admin/addPi">Add a Pi? <i class="fas fa-plus"></i></a></li>
+    <li><button onclick="onDeactivatePi()">De-activate this Pi? <i class="fas fa-minus"></i></button></li>
+</ul> -->
 
-{% block bottom %}
-
-<ul class="nav navbar-nav navbar-right">
-    <li><a href="/admin/addPi" >Add a Pi? <i class="fas fa-plus"></i></a></li>
-    <li><button onclick="onDeactivatePi()">De-activate this Pi? <i class="fas fa-minus"></i></button></li>                                    
+<ul class="nav navbar-nav pbw-centered-nav">
+    <li><button class="btn pbw-buttonize"><a href="/admin/addPi" >Add a Pi? <i class="fas fa-plus"></i></a></button></li>
+    <li><button onclick="onDeactivatePi()" class="btn pbw-buttonize">De-activate this Pi? <i class="fas fa-minus"></i></button></li>
 </ul>
 
 <script>
+    function onDeactivatePi() {
+        if (document.getElementById('roomId').value != "") {
 
-    function onDeactivatePi(){
-        if(document.getElementById('roomId').value != "")
-        {
-            
 
             var r = confirm("Are you sure you want to deactivate pi " + document.getElementById('uuid').value + " ?");
-            if (r == true) 
-            {
+            if (r == true) {
                 document.getElementById("deactivatPi").submit();
-            } 
-            else 
-            {
-                    alert("Cancelled");
+            } else {
+                alert("Cancelled");
             }
-        }
-        else
-        {
+        } else {
             // no pi selected
         }
     }
-
 </script>
-{% endblock %}   
+{% endblock %}

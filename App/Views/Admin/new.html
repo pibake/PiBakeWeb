@@ -1,101 +1,94 @@
-{% extends 'baseAdmin.html' %}
+{% extends 'baseAdmin.html' %} {% block title %}Sign up{% endblock %} {% block footer %}
+<script src="/js/hideShowPassword.min.js"></script>
+<script src="/js/app.js"></script>
 
-{% block title %}Sign up{% endblock %}
+<script>
+    $(document).ready(function() {
 
-{% block footer %}
-    <script src="/js/hideShowPassword.min.js"></script>
-    <script src="/js/app.js"></script>
-
-    <script>
-        $(document).ready(function() {
-
-            /**
-             * Validate the form
-             */
-            $('#formSignup').validate({
-                rules: {
-                    firstName: 'required',
-                    lastName: 'required',
-                    email: {
-                        required: true,
-                        email: true,
-                        remote: '/account/validate-email'
-                    },
-                    password: {
-                        required: true,
-                        minlength: 6,
-                        validPassword: true
-                    }
+        /**
+         * Validate the form
+         */
+        $('#formSignup').validate({
+            rules: {
+                firstName: 'required',
+                lastName: 'required',
+                email: {
+                    required: true,
+                    email: true,
+                    remote: '/account/validate-email'
                 },
-                messages: {
-                    email: {
-                        remote: 'email already taken'
-                    }
+                password: {
+                    required: true,
+                    minlength: 6,
+                    validPassword: true
                 }
-            });
-
-
-            /**
-              * Show password toggle button
-              */
-            $('#inputPassword').hideShowPassword({
-                show: true,
-                innerToggle: 'focus'
-            });
+            },
+            messages: {
+                email: {
+                    remote: 'email already taken'
+                }
+            }
         });
-    </script>
 
-{% endblock %}
 
-{% block body %}
+        /**
+         * Show password toggle button
+         */
+        $('#inputPassword').hideShowPassword({
+            show: true,
+            innerToggle: 'focus'
+        });
+    });
+</script>
 
-    <h1>Sign up</h1>
+{% endblock %} {% block body %}
 
-    {% if user.errors is not empty %}
-        <p>Errors:</p>
-        <ul>
-            {% for error in user.errors %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+<h1>Sign up</h1>
 
-    <form method="post" action="/Signup/create" id="formSignup">
+{% if user.errors is not empty %}
+<p>Errors:</p>
+<ul>
+    {% for error in user.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
-        <div class="form-group">
-            <label for="inputName">First Name</label>
-            <input id="inputName" name="firstName" placeholder="First Name" autofocus value="" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputName">Last Name</label>
-            <input id="inputName" name="lastName" placeholder="Last Name" autofocus value="" required class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputEmail">Email address</label>
-            <input id="inputEmail" name="email" placeholder="email address" value="" required type="email" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label for="inputorgId">Organization ID</label>
-            <input id="inputorgId" name="orgId"  value='{{selectedOrg[0].orgId}}' required class="form-control" readonly />
+<form method="post" action="/Signup/create" id="formSignup">
 
-        </div>
-        <div class="form-group">
-            <label for="role">Role:</label>
-            <select id="roleSelect" name="role" >
+    <div class="form-group pbw-fullwidth">
+        <label for="inputName">First Name</label>
+        <input id="inputName" name="firstName" placeholder="First Name" autofocus value="" required class="form-control" />
+    </div>
+    <div class="form-group pbw-fullwidth">
+        <label for="inputName">Last Name</label>
+        <input id="inputName" name="lastName" placeholder="Last Name" autofocus value="" required class="form-control" />
+    </div>
+    <div class="form-group pbw-fullwidth">
+        <label for="inputEmail">Email address</label>
+        <input id="inputEmail" name="email" placeholder="email address" value="" required type="email" class="form-control" />
+    </div>
+    <div class="form-group pbw-fullwidth">
+        <label for="inputorgId">Organization ID</label>
+        <input id="inputorgId" name="orgId" value='{{selectedOrg[0].orgId}}' required class="form-control" readonly />
+
+    </div>
+    <div class="form-group pbw-fullwidth">
+        <label for="role">Role:</label>
+        <select id="roleSelect" name="role" style="padding: 5px 20px;">
                 <option value="Admin">Admin</option>
                 <option value="Client">Client</option>
             </select>
-        </div>
-        <div class="form-group">
-            <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" name="password" placeholder="Password" required class="form-control" />
-        </div>
-        <button type="submit" class="btn btn-default">Sign Up</button>
-    </form>
+    </div>
+    <div class="form-group pbw-fullwidth">
+        <label for="inputPassword">Password</label>
+        <input type="password" id="inputPassword" name="password" placeholder="Password" required class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-default btn-block pbw-buttonize">Sign Up</button>
+</form>
 
-{% endblock %}
-{% block bottom %}
+{% endblock %} {% block bottom %}
 <ul class="nav navbar-nav navbar-right">
-        <li><a href="/Admin/currentUsers" ><i class="fas fa-arrow-left"></i> Back </a></li>                                
-    </ul>
-{% endblock %}    
+    <li><a href="/Admin/currentUsers"><i class="fas fa-arrow-left"></i> Back </a></li>
+</ul>
+{% endblock %}

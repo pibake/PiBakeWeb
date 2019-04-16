@@ -1,49 +1,51 @@
-{% extends "baseAdmin.html" %}
+{% extends "baseAdmin.html" %} {% block title %}Info for {{selectedOrg[0].orgName}} {% endblock %} {% block body %}
 
-{% block title %}Info for {{selectedOrg[0].orgName}} {% endblock %}
-{% block body %}
-        
-    <h1>Current Information for {{selectedOrg[0].orgName}}</h1>   
+<h1>Current Information for {{selectedOrg[0].orgName}}</h1>
 
-    <div style="text-align: center"> 
-            <form action="/Admin/updateOrg" id="orgForm" method="POST">
-                
-                Organization ID:
-                <input type="text" id="orgId"name="orgId" value="{{selectedOrg[0].orgId}}" readonly>
-                <br>
-                Organization Name:
-                <input type="text" id="OrgName" name="OrgName" value="{{selectedOrg[0].orgName}}" >
-                <br>
-                Street:
-                <input type="text" id="Street" name="Street" value="{{selectedOrg[0].street}}" >
-                <br>
-                City:
-                <input type="text" id="City" name="City" value="{{selectedOrg[0].city}}" >
-                <br>
-                State:
-                <input type="text" id="State" name="State" value="{{selectedOrg[0].state}}" >
-                <br>
-                Zip Code:
-                <input type="text" id="Zip" name="Zip" value="{{selectedOrg[0].zip}}" >
-                <br>
-                Phone:
-                <input type="text" id="Phone" name="Phone" value="{{selectedOrg[0].phone}}" >
-                <br>
-                Email :
-                <input type="text" id="email" name="email" value="{{selectedOrg[0].email}}" >
-                <br>
-                <button type="subBtn" id="subBtn" form="orgForm" value="Submit" >Save Changes <i class="fas fa-save"></i></button>
-              </form> 
+<div>
+    <form action="/Admin/updateOrg" id="orgForm" method="POST" class="form-horizontal" style="width: 40%;">
+        <div class="form-group col-sm-12 pbw-no-horz-margin">
+            <label for="orgId" class="control-label">Organization ID</label>
+            <input id="orgId" name="orgId" value="{{selectedOrg[0].orgId}}" readonly class="form-control" />
+        </div>
+        <div class="form-group col-sm-12 pbw-no-horz-margin">
+            <label for="OrgName" class="control-label">Organization Name</label>
+            <input id="OrgName" name="OrgName" value="{{selectedOrg[0].orgName}}" class="form-control" />
+        </div>
+        <div class="form-group col-sm-12 pbw-no-horz-margin">
+            <label for="Street" class="control-label">Street</label>
+            <input id="Street" name="Street" value="{{selectedOrg[0].street}}" type="text" class="form-control" />
+        </div>
+        <div class="form-group col-sm-5 pbw-no-horz-margin">
+            <label for="City" class="control-label">City</label>
+            <input id="City" name="City" value="{{selectedOrg[0].city}}" type="text" class="form-control" />
+        </div>
+        <div class="form-group col-sm-3 pbw-no-horz-margin">
+            <label for="State" class="control-label">State</label>
+            <input id="State" name="State" value="{{selectedOrg[0].state}}" type="text" class="form-control" />
+        </div>
+        <div class="form-group col-sm-4 pbw-no-horz-margin">
+            <label for="Zip" class="control-label">Zip Code</label>
+            <input id="Zip" name="Zip" value="{{selectedOrg[0].zip}}" type="text" class="form-control" />
+        </div>
+        <div class="form-group col-sm-6 pbw-no-horz-margin">
+            <label for="Phone" class="control-label">Phone</label>
+            <input id="Phone" name="Phone" value="{{selectedOrg[0].phone}}" type="text" class="form-control" />
+        </div>
+        <div class="form-group col-sm-6 pbw-no-horz-margin">
+            <label for="email" class="control-label">Email</label>
+            <input id="email" name="email" value="{{selectedOrg[0].email}}" type="email" class="form-control" />
+        </div>
+        <br>
 
-    </div>
+        <button type="subBtn" id="subBtn" form="orgForm" value="Submit" class="btn pbw-buttonize">Save Changes <i class="fas fa-save "></i></button>
+    </form>
+</div>
 
-{% endblock %}    
-
-
-{% block bottom %}
-<!-- <ul class="nav navbar-nav navbar-right">
-    <li><a href="/Admin/addLocation" >Add a Location <i class="fas fa-plus"></i></a></li>                           
+{% endblock %} {% block bottom %}
+<!-- <ul class="nav navbar-nav navbar-right ">
+    <li><a href="/Admin/addLocation " >Add a Location <i class="fas fa-plus "></i></a></li>                           
 </ul> -->
 
 
-{% endblock %}   
+{% endblock %}

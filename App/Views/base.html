@@ -11,7 +11,7 @@
 <body>
     <!-- About PiBake Modal Popup -->
     <div class="modal fade" id="about-pibake-modal" tabindex="-1" role="dialog" aria-labelledby="about-pibake-modal-label">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="about-pibake-modal-label">About PiBake</h35>
@@ -20,7 +20,12 @@
                 </button>
                 </div>
                 <div class="modal-body">
-                    <p>About our PiBake crew and the amazing temperatures we measure.</p>
+                    <p>PiBake is a modular, cloud-based, sensor network solution for enterprise data gathering solutions across North America and the world. We use a series of specialized digital sensor tools integrated with our custom designed Raspberry
+                        Pi hardware to deliver data to our proprietary web interface for clients on any device.</p>
+                    <img src="/Images/pi-pic.jpg" alt="a pi bake hardware unit" class="img-rounded pbw-modal-img">
+                    <p style="margin-top:10px;">At Team PiBake, we strive to use technology to solve data problems in a way that's accessible and elegant. We are firm believers in ability to use web distributed tech to help our clients, but we know they deserve to interact with
+                        real human beings. Each PiBake cluster is overseen and administered by expert members of our staff who know our cutting-edge processes and love the people we serve.</p>
+
                 </div>
             </div>
         </div>
@@ -28,7 +33,7 @@
 
     <!-- Contact Us Modal Popup -->
     <div class="modal fade" id="contact-modal" tabindex="-1" role="dialog" aria-labelledby="contact-modal-label">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="contact-modal-label">Contact Us</h3>
@@ -37,7 +42,12 @@
                         </button>
                 </div>
                 <div class="modal-body">
-                    <p>Contact us. Possibly by some sort of form.</p>
+                    <p style="text-align:center;">Want to learn more about PiBake, or talk to our team about what we can do for you?</p>
+                    <p style="text-align:center;">Give us a call or set up a meeting. We're excited to hear from you!</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="tel:2318831551" class="btn btn-block pbw-buttonize" role="button">Call the team</a>
+                    <a href="https://calendly.com/pibakeweb/30min" class="btn btn-block pbw-buttonize" role="button">Setup Appointment</a>
                 </div>
             </div>
         </div>
@@ -45,7 +55,7 @@
 
     <!-- Help Modal Popup -->
     <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title" id="help-modal-label">Get Help</h3>
@@ -54,11 +64,11 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>We'll help you and stuff, seriously!</p>
+                    <p style="text-align: center">Something not working quite right? Don't worry, we're here to help! Click an option below to connect with our dedicated support staff.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Call Support</button>
-                    <button type="button" class="btn btn-secondary">Email Us</button>
+                    <a href="tel:2318831551" class="btn btn-block pbw-buttonize" role="button">Call Support</a>
+                    <a href="mailto:pibakeweb@gmail.com" class="btn btn-secondary btn-block pbw-buttonize" role="button">Email Us</a>
                 </div>
             </div>
         </div>
@@ -100,7 +110,7 @@
 
 
     </div>
-    <div class="container">
+    <div class="container" style="margin-bottom: 50px;">
 
         {% for message in flash_messages %}
         <div class="alert alert-{{ message.type }}">
