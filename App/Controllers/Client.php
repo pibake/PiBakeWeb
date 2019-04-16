@@ -5,6 +5,7 @@ use \App\Auth;
 use \App\Flash;
 use App\Models\Temperature;
 use App\Models\Pi;
+
 /**
  * Items controller (example)
  *
@@ -30,6 +31,7 @@ class Client extends Authenticated
      */
     public function indexAction()
     {
+
         //get the user object
         $user = Auth::getUser();
         // call model to get Pis using user OrgId property
@@ -81,4 +83,6 @@ class Client extends Authenticated
         View::renderTemplate('Client/ClientDashboard.html', ['user' => $this->user, 'temps' => $temps, 'resultString'=> $formattedResults, 'Pis' => $pis, 'RESULTARRAY' => $formattedResultsArray, 'timeLabels'=>$timeLabels, 'index'=>0]);
    
     }
+
 }
+

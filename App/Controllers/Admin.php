@@ -107,7 +107,7 @@ class Admin extends Authenticated
                   if( isset($_SESSION['selectedOrg'])){
 
                   $selectedOrg = Organization::getOrganizationInfo($_SESSION["selectedOrg"]);
-                    
+     
                   View::renderTemplate('Admin/AdminOrganizationInfo.html', ['user' => $this->user, 'selectedOrg' => $selectedOrg]);
                 
               }else{
@@ -152,7 +152,7 @@ class Admin extends Authenticated
         
      
         Pi::addPi();
-        
+        $this->redirect('/Admin/currentPis');
     }
     public function updateOrgAction(){
         print_r($_POST);
