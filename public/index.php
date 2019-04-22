@@ -39,4 +39,12 @@ $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'ac
 $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
 $router->add('{controller}/{action}');
 
-$router->dispatch($_SERVER['QUERY_STRING']);
+//try to find controller and method
+try{
+    $router->dispatch($_SERVER['QUERY_STRING']);
+}
+catch(Exception $e)
+{
+    http_response_code(404);
+    die();
+}
