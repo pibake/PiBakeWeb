@@ -20,19 +20,19 @@ class Config
      * Database name
      * @var string
      */
-    const DB_NAME = 'pidata3';
+    const DB_NAME = 'PiData_Test';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'josiah';
+    const DB_USER = 'wyatt';
 
     /**
      * Database password
      * @var string
      */
-    const DB_PASSWORD = '';
+    const DB_PASSWORD = 'wyattisawesome';
 
     /**
      * Show or hide error messages on screen

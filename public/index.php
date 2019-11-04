@@ -40,11 +40,4 @@ $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'act
 $router->add('{controller}/{action}');
 
 //try to find controller and method
-try{
-    $router->dispatch($_SERVER['QUERY_STRING']);
-}
-catch(Exception $e)
-{
-    http_response_code(404);
-    die();
-}
+$router->dispatch($_SERVER['QUERY_STRING']);
